@@ -1,28 +1,22 @@
-import { useState } from 'react'
-import logo from '/logo.svg'
-import './App.css'
+import styled from 'styled-components'
 
 function App() {
-  const [count, setCount] = useState(0)
 
   return (
-    <>
-      <div>
-        <a>
-          <img src={logo} className="logo" alt="Accerte logo" />
-        </a>
-      </div>
-      <h1>Accerte</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-    </>
+    <AppContainer>
+      <p>
+        TESTE ACCERTE
+      </p>
+    </AppContainer >
   )
 }
 
 export default App
+
+const AppContainer = styled.main`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: calc(100vw - 15px);
+  padding: 10px;
+`
