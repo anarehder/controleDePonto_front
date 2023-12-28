@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import ImagemInicial from '../assets/imagem-pag1.jpg';
 import { GoArrowRight } from "react-icons/go";
 import styled from 'styled-components';
@@ -5,10 +6,12 @@ import styled from 'styled-components';
 function HomePage(){
     return(
         <PageContainer>
-            <button> 
-                <p>Acessar</p>
-                <GoArrowRight  size={24} />
-            </button>
+            <Link to={'/login'} >
+                <button>
+                    <p>Acessar</p>
+                    <GoArrowRight size={24} />
+                </button>
+            </Link>
         </PageContainer>
     )
 }
