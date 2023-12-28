@@ -4,7 +4,12 @@ body {
     font-family: 'Roboto Condensed', sans-serif;
     display: flex;
     justify-content: center;
+    height: 100%;
     min-width: 320px;
+}
+
+p{
+    text-align: center;
 }
 
 svg {
@@ -40,6 +45,7 @@ input {
     background-color: #F0F5F9;
     color:#021121;
     border-radius: 24px;
+    align-items: center;
 
     @media (max-width: 800px) {
         text-align: center;
@@ -47,16 +53,17 @@ input {
 }
 
 button {
-    border-radius: 24px;
+    border-radius: 16px;
     border: 0.5px solid gray;
     margin: 0 10px;
     padding: 10px;
     font-size: 20px;
     font-weight: 500;
     cursor: pointer;
-    background-color: #F0F5F9;
-    color: #021121;
+    background-color: #021121;
+    color: #FFFFFF;
     transition: border-color 0.25s;
+    align-items: center;
 }
 
 button:hover {
@@ -64,6 +71,6 @@ button:hover {
 }
 
 button:disabled {
-    background-color: #FFFFFF;
+    background-color: #F0F5F9;
     color: #021121;
 }

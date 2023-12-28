@@ -1,12 +1,16 @@
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import styled from 'styled-components'
+import HomePage from "./pages/HomePage";
 
 function App() {
 
   return (
     <AppContainer>
-      <p>
-        TESTE ACCERTE
-      </p>
+      <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+          </Routes>
+        </BrowserRouter >
     </AppContainer >
   )
 }
@@ -14,9 +18,8 @@ function App() {
 export default App
 
 const AppContainer = styled.main`
+  width: 100dvw;
   display: flex;
   justify-content: center;
   align-items: center;
-  max-width: calc(100vw - 15px);
-  padding: 10px;
 `
