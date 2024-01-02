@@ -61,7 +61,7 @@ export default LoginPage;
 const PageContainer = styled.div`
     width: 100%;
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
     gap: 25px;
 `
 

@@ -4,6 +4,7 @@ import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
 import AdminPage from "./pages/AdminPage";
 import SummaryPage from "./pages/SummaryPage";
+import RegistryPage from "./pages/RegistryPage";
 
 function App() {
 
@@ -15,6 +16,7 @@ function App() {
             <Route path="/login" element={<LoginPage />} />
             <Route path="/admin" element={<AdminPage />} />
             <Route path="/summary" element={<SummaryPage />} />
+            <Route path="/registry" element={<RegistryPage />} />
           </Routes>
         </BrowserRouter >
     </AppContainer >
