@@ -12,8 +12,7 @@ export default function HeaderComponent(props) {
 }
 
 const Header = styled.div`
-    margin-left: 15%;
-    margin-top: 5%;
+    margin-top: 3%;
     width: 70%;
     border-bottom: 2px solid #E6E6E6;
     padding: 10px 25px;
@@ -26,6 +25,6 @@ const Header = styled.div`
         font-weigth: 400;
     }
     img {
-        width: 125px;
+        width: 100px;
     }
 `
