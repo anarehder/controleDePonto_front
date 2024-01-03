@@ -45,16 +45,17 @@ function ReportPage(){
                             <GoArrowRight size={24} />
                         </button>
                 </InputArea>
-                <DataArea>
-                    <TableHeader>
-                        <h1>Dia</h1>
-                        <h1>Entrada</h1>
-                        <h1>Pausa</h1>
-                        <h1>Retorno</h1>
-                        <h1>Saída</h1>
-                        <h1>Horas/Dia</h1>
-                    </TableHeader>
-                    <Daily>
+                { data.length !== 0 && 
+                    <DataArea>
+                        <TableHeader>
+                            <h1>Dia</h1>
+                            <h1>Entrada</h1>
+                            <h1>Pausa</h1>
+                            <h1>Retorno</h1>
+                            <h1>Saída</h1>
+                            <h1>Horas/Dia</h1>
+                        </TableHeader>
+                        <Daily>
                         {data.map((d,i)=> (
                             <div key={i}>
                                 <h2>
@@ -77,34 +78,35 @@ function ReportPage(){
                                 </h2>
                             </div>
                         ))}
-                    </Daily>
-                    <TableFooter>
-                        <div>
-                            <h1>
-                                Total Horas no Mês
-                            </h1>
-                            <h2>
-                                16:30
-                            </h2>
-                        </div>
-                        <div>
-                            <h1>
-                                Saldo Mês Anterior
-                            </h1>
-                            <h2>
-                                + 10:15
-                            </h2>
-                        </div>
-                        <div>
-                            <h1>
-                                Banco de Horas
-                            </h1>
-                            <h2>
-                                16:30
-                            </h2>
-                        </div>
-                    </TableFooter>
-                </DataArea>
+                        </Daily>
+                        <TableFooter>
+                            <div>
+                                <h1>
+                                    Total Horas no Mês
+                                </h1>
+                                <h2>
+                                    16:30
+                                </h2>
+                            </div>
+                            <div>
+                                <h1>
+                                    Saldo Mês Anterior
+                                </h1>
+                                <h2>
+                                    + 10:15
+                                </h2>
+                            </div>
+                            <div>
+                                <h1>
+                                    Banco de Horas
+                                </h1>
+                                <h2>
+                                    16:30
+                                </h2>
+                            </div>
+                        </TableFooter>
+                    </DataArea>
+                }
             </MainContainer>
         </PageContainer>
     )
