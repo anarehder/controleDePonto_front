@@ -7,6 +7,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 
 function SummaryPage(){
+    const [bank, setBank] = useState({totalHours:'16:30',previousMonthBalance:'+ 10:15', bankHours:'- 16:30'});
     const [workedToday, setWorkedToday] = useState(["08:05","14:10"]);
     //const [workedToday, setWorkedToday] = useState([]);
     const todayDate = new Date();
@@ -52,15 +53,19 @@ function SummaryPage(){
                 <h1> Relatório Resumido</h1>
                     <div>
                         <p>Trabalhado hoje</p>
-                        <StyledParagraph color={'positive'}> 08:00 </StyledParagraph>
+                        <p> 08:00 </p>
                     </div>
                     <div>
                         <h2>Total mês</h2>
-                        <StyledParagraph color={'negative'}> 08:00 </StyledParagraph>
+                        <p> {bank.totalHours} </p>
+                    </div>
+                    <div>
+                        <h2>Saldo Mês Anterior</h2>
+                        <StyledParagraph color={bank.previousMonthBalance.slice(0,1)}> {bank.previousMonthBalance} </StyledParagraph>
                     </div>
                     <div> 
                         <h2>Banco de Horas</h2>
-                        <StyledParagraph color={'neutral'}> 08:00 </StyledParagraph>
+                        <StyledParagraph color={bank.bankHours.slice(0,1)}> {bank.bankHours} </StyledParagraph>
                     </div>
             </SummaryReport>
         </PageContainer>
@@ -125,5 +130,5 @@ const SummaryReport = styled.div`
 `
 
 const StyledParagraph = styled.p`
-    color: ${(props) => (props.color === 'positive' ? '#1C8E09' : props.color === 'negative' ? '#C91313' : '#021121')}; 
+color: ${(props) => (props.color === '+' ? '#1C8E09' : props.color === '-' ? '#C91313' : '#021121')}; 
 `
