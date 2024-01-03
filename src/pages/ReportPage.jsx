@@ -36,7 +36,8 @@ function ReportPage(){
             <HeaderComponent text={`Olá, ${name}`} />
             <MainContainer>
                 <h1> Selecione um mês</h1>
-                <InputArea>
+                <div>
+                    <InputArea>
                         <input
                             placeholder='Mês'
                             type="month"
@@ -47,9 +48,10 @@ function ReportPage(){
                         <button type="submit">
                             <p>Exibir dados</p>
                             <GoArrowRight size={24} />
-                        </button>                </InputArea>
-                
-                { data.length !== 0 && 
+                        </button>
+                    </InputArea>
+                </div>
+                {data.length !== 0 &&
                     <DataArea>
                         <TableHeader>
                             <h1>Dia</h1>
@@ -60,28 +62,28 @@ function ReportPage(){
                             <h1>Horas/Dia</h1>
                         </TableHeader>
                         <Daily>
-                        {data.map((d,i)=> (
-                            <div key={i}>
-                                <h2>
-                                    {d.data.slice(0, 2)}
-                                </h2>
-                                <h2>
-                                    {d.entrada}
-                                </h2>
-                                <h2>
-                                    {d.pausa}
-                                </h2>
-                                <h2>
-                                    {d.retorno}
-                                </h2>
-                                <h2>
-                                    {d.saida}
-                                </h2>
-                                <h2>
-                                    {d.horasDia}
-                                </h2>
-                            </div>
-                        ))}
+                            {data.map((d, i) => (
+                                <div key={i}>
+                                    <h2>
+                                        {d.data.slice(0, 2)}
+                                    </h2>
+                                    <h2>
+                                        {d.entrada}
+                                    </h2>
+                                    <h2>
+                                        {d.pausa}
+                                    </h2>
+                                    <h2>
+                                        {d.retorno}
+                                    </h2>
+                                    <h2>
+                                        {d.saida}
+                                    </h2>
+                                    <h2>
+                                        {d.horasDia}
+                                    </h2>
+                                </div>
+                            ))}
                         </Daily>
                         <TableFooter>
                             <div>
@@ -96,7 +98,7 @@ function ReportPage(){
                                 <h1>
                                     Saldo Mês Anterior
                                 </h1>
-                                <StyledParagraph color={bank.previousMonthBalance.slice(0,1)}>
+                                <StyledParagraph color={bank.previousMonthBalance.slice(0, 1)}>
                                     {bank.previousMonthBalance}
                                 </StyledParagraph>
                             </div>
@@ -104,16 +106,17 @@ function ReportPage(){
                                 <h1>
                                     Banco de Horas
                                 </h1>
-                                <StyledParagraph color={bank.bankHours.slice(0,1)}>
+                                <StyledParagraph color={bank.bankHours.slice(0, 1)}>
                                     {bank.bankHours}
                                 </StyledParagraph>
                             </div>
                         </TableFooter>
-                        
                     </DataArea>
                 }
-                {(form.month !== "" && data.length!== 0) && <ExportToExcel name={name} month={form.month} data={data} bank={bank} />}
-                <ReturnComponent/>
+                <div>
+                    <ReturnComponent />
+                    {(form.month !== "" && data.length !== 0) && <ExportToExcel name={name} month={form.month} data={data} bank={bank} />}
+                </div>
             </MainContainer>
         </PageContainer>
     )
@@ -134,6 +137,9 @@ const MainContainer = styled.div`
     flex-direction: column;
     justify-content: flex-start;
     gap: 40px;
+    button {
+        height: 50px;
+    }
 `
 
 const InputArea = styled.form`
@@ -141,10 +147,6 @@ const InputArea = styled.form`
     width: 500px;
     gap: 50px;
     align-items: center;
-    button{ 
-        gap: 15px;
-        width: 300px;
-    }
 `
 
 const DataArea = styled.div`
