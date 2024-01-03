@@ -6,6 +6,7 @@ import { RxCountdownTimer } from "react-icons/rx";
 import { PiCoffeeLight } from "react-icons/pi";
 import { GoArrowRight } from "react-icons/go";
 import { useState } from "react";
+import ReturnComponent from '../components/ReturnSummaryComponent';
 
 function RegistryPage() {
     const todayDate = new Date();
@@ -97,6 +98,7 @@ function RegistryPage() {
                         </button>
                     </InputArea>
                 </SubContainer>
+                <ReturnComponent />
             </MainContainer>
         </PageContainer>
     )

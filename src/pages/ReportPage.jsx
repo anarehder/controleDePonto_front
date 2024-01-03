@@ -3,6 +3,7 @@ import HeaderComponent from '../components/HeaderComponent';
 import { GoArrowRight } from "react-icons/go";
 import { useState } from 'react';
 import ExportToExcel from '../services/ExportToExcel';
+import ReturnComponent from '../components/ReturnSummaryComponent';
 
 function ReportPage(){
     const name = "João";
@@ -112,6 +113,7 @@ function ReportPage(){
                     </DataArea>
                 }
                 {(form.month !== "" && data.length!== 0) && <ExportToExcel name={name} month={form.month} data={data} bank={bank} />}
+                <ReturnComponent/>
             </MainContainer>
         </PageContainer>
     )
