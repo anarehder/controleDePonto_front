@@ -91,7 +91,7 @@ function RegistryPage() {
                             value={form.date}
                             onChange={handleForm}
                         />
-                        <button type="submit">
+                        <button type="submit" disabled={form.date === "" || form.time === ""}>
                             <p>Registrar ponto</p>
                             <GoArrowRight size={24} />
                         </button>
