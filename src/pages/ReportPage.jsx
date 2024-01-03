@@ -2,13 +2,16 @@ import styled from 'styled-components';
 import HeaderComponent from '../components/HeaderComponent';
 import { GoArrowRight } from "react-icons/go";
 import { useState } from 'react';
+import ExportToExcel from '../services/ExportToExcel';
 
 function ReportPage(){
+    const name = "João";
     const todayDate = new Date();
     const [form, setForm] = useState({ month: ""});
     //const [data, setData] = useState([]);
     const [data, setData] = useState([{data: '01/01/2023', entrada: '08:00', pausa: '12:00', retorno:'14:00', saida:'18:00', horasDia:'8:00' },
-                                    {data: '02/01/2023', entrada: '08:00', pausa: '12:00', retorno:'14:00', saida:'18:00', horasDia:'8:00' }])
+                                    {data: '02/01/2023', entrada: '08:00', pausa: '12:00', retorno:'14:00', saida:'18:00', horasDia:'8:00' }]);
+    const [bank, setBank] = useState({totalHours:'16:30',previousMonthBalance:'+ 10:15', bankHours:'- 16:30'});
     const handleForm = (e) => {
         e.preventDefault();
         setForm((prevForm) => ({ ...prevForm, [e.target.id]: e.target.value }));
@@ -29,7 +32,7 @@ function ReportPage(){
 
     return(
         <PageContainer onSubmit={handleSubmit}>
-            <HeaderComponent text={"Olá, João"} />
+            <HeaderComponent text={`Olá, ${name}`} />
             <MainContainer>
                 <h1> Selecione um mês</h1>
                 <InputArea>
@@ -43,8 +46,8 @@ function ReportPage(){
                         <button type="submit">
                             <p>Exibir dados</p>
                             <GoArrowRight size={24} />
-                        </button>
-                </InputArea>
+                        </button>                </InputArea>
+                
                 { data.length !== 0 && 
                     <DataArea>
                         <TableHeader>
@@ -85,28 +88,30 @@ function ReportPage(){
                                     Total Horas no Mês
                                 </h1>
                                 <h2>
-                                    16:30
+                                    {bank.totalHours}
                                 </h2>
                             </div>
                             <div>
                                 <h1>
                                     Saldo Mês Anterior
                                 </h1>
-                                <h2>
-                                    + 10:15
-                                </h2>
+                                <StyledParagraph color={bank.previousMonthBalance.slice(0,1)}>
+                                    {bank.previousMonthBalance}
+                                </StyledParagraph>
                             </div>
                             <div>
                                 <h1>
                                     Banco de Horas
                                 </h1>
-                                <h2>
-                                    16:30
-                                </h2>
+                                <StyledParagraph color={bank.bankHours.slice(0,1)}>
+                                    {bank.bankHours}
+                                </StyledParagraph>
                             </div>
                         </TableFooter>
+                        
                     </DataArea>
                 }
+                {(form.month !== "" && data.length!== 0) && <ExportToExcel name={name} month={form.month} data={data} bank={bank} />}
             </MainContainer>
         </PageContainer>
     )
@@ -119,6 +124,7 @@ const PageContainer = styled.div`
     flex-direction: column;
     align-items: center;
     gap: 20px;
+    margin-bottom: 20px;
 `
 
 const MainContainer = styled.div`
@@ -145,7 +151,6 @@ const DataArea = styled.div`
     gap: 20px; 
     border-radius: 24px;
     background-color:#F0F5F9;
-    margin-bottom: 25px;
     h2 {
         font-weight: 400;
         font-size: 25px;
@@ -174,12 +179,19 @@ const Daily = styled.div`
 `
 
 const TableFooter = styled.div`
+    flex-wrap: wrap;
+    justify-content: center;
     margin: 0 10px;
     padding: 10px;
     border-top: 2px solid #E6E6E6;
     div {
+        padding: 0 35px;
         text-align: center;
         align-items: center;
         gap: 20px;
     }
+`
+
+const StyledParagraph = styled.h2`
+    color: ${(props) => (props.color === '+' ? '#1C8E09' : props.color === '-' ? '#C91313' : '#021121')}; 
 `
