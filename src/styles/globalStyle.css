@@ -42,19 +42,18 @@ h2 {
 }
 
 input {
+    font-family: 'Roboto Condensed', sans-serif;
     font-weight: 400;
     font-size: 24px;
-    width: 100%;
     outline: none;
     border: none;
     background-color: transparent;
     display: flex;
     align-items: center;
-    
     &::placeholder {
         color: #021121;
         font-weight: 600;
-      }
+    }
     @media (max-width: 800px) {
         text-align: center;
     }
@@ -82,4 +81,14 @@ button:hover {
 button:disabled {
     background-color: #F0F5F9;
     color: #021121;
+}
+
+select {
+    font-family: 'Roboto Condensed', sans-serif;
+    font-weight: 400;
+    font-size: 20px;
+    border-radius: 16px;
+    border: 0.5px solid #E6E6E6;
+    background-color: #F0F5F9;
+    padding: 10px 15px;
 }
