@@ -4,6 +4,7 @@ import { FaCalendarAlt } from "react-icons/fa";
 import { FaRegClock } from "react-icons/fa";
 import { GoArrowRight } from "react-icons/go";  
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 function SummaryPage(){
     const [workedToday, setWorkedToday] = useState(["08:05","14:10"]);
@@ -32,14 +33,18 @@ function SummaryPage(){
                         </ul>}
                     </div>
                     <div>
-                        <button>
-                            <p>Novo Registro</p>
-                            <GoArrowRight size={24} />
-                        </button>
-                        <button>
-                            <p>Relatório Completo</p>
-                            <GoArrowRight size={24} />
-                        </button>
+                        <Link to={'/registry'} >
+                            <button>
+                                <p>Novo Registro</p>
+                                <GoArrowRight size={24} />
+                            </button>
+                        </Link>
+                        <Link to={'/report'} >
+                            <button>
+                                <p>Relatório Completo</p>
+                                <GoArrowRight size={24} />
+                            </button>
+                        </Link>
                     </div>
                 </MainInfo>
             </MainContainer>
