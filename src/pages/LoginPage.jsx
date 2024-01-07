@@ -4,9 +4,12 @@ import HeaderComponent from '../components/HeaderComponent';
 import { GoArrowRight } from "react-icons/go";
 import { LuUserCircle2 } from "react-icons/lu";
 import { RiLockPasswordLine } from "react-icons/ri";
+import apiService from "../services/apiService";
+import { useNavigate } from "react-router-dom";
 
 function LoginPage(){
     const [form, setForm] = useState({ username: "", password: "" });
+    const navigate = useNavigate();
     console.log(form);
     
     const handleForm = (e) => {
@@ -14,10 +17,22 @@ function LoginPage(){
         setForm((prevForm) => ({ ...prevForm, [e.target.id]: e.target.value }));
     };
 
-    const handleSubmit = (e) => {
+    async function handleSubmit(e) {
         e.preventDefault();
         if (!form.username || !form.password) return alert("Todos os campos devem ser preenchidos");
-        setForm({ username: '', password: '' });
+        try {
+            const response = await apiService.signIn(form)
+            if (response.status === 200) {
+                const { token, id } = await response.data
+                localStorage.setItem("token", `Bearer ${token}`)
+                localStorage.setItem("id", `${id}`)
+                navigate('/summary')
+            }
+        } catch (error) {
+            if (error.response.status === 401 || error.response.status === 400 ) alert("Incorrect email or password, please try again.")
+        } finally {
+            setForm({ username: '', password: '' });
+        }
     };
 
     return (
@@ -79,7 +94,8 @@ const FormContainer = styled.form`
 `
 
 const SearchBarForm = styled.div`
-background-color: #F0F5F9;
+    justify-content: flex-start;    
+    background-color: #F0F5F9;
     color:#021121;
     border: 0.5px solid #E6E6E6;
     border-radius: 16px;
