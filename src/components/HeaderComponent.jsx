@@ -1,12 +1,19 @@
 import styled from 'styled-components';
 import logo from '../assets/logo.svg';
-import { useUser } from '../contexts/UserContext';
+import { useContext } from 'react';
+import { UserContext } from "../contexts/UserContext";
 
 export default function HeaderComponent() {
-    const { user } = useUser();
+    const [user] = useContext(UserContext);
+
     return (
         <Header>
-            <h1>Olá, {user.name.charAt(0).toUpperCase() + user.name.slice(1)}</h1>
+            {
+                user.name ?
+                <h1>Olá, ${user.name.charAt(0).toUpperCase() + user.name.slice(1)}</h1> :
+                <h1>Login</h1>
+            }
+            
             <img src={logo} alt={"logo"} />
         </Header>
     );

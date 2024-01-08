@@ -7,6 +7,11 @@ function signIn(body) {
     return axios.post(`${BASE_URL}/login`, body);
 }
 
-const apiService = { signIn };
+function getTodayHours() {
+    const token = `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbXBsb3llZUlkIjoyLCJpYXQiOjE3MDQ2NzQ5NDl9.ajr9fEqyXGZ9O0pUPCsRxd1jX-eOYJ0qJipIezOmsCc`;
+    return axios.get(`${BASE_URL}/bank`, { headers: { Authorization: token } });
+}
+
+const apiService = { signIn, getTodayHours };
 
 export default apiService;

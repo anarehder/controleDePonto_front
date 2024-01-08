@@ -3,8 +3,9 @@ import HeaderComponent from '../components/HeaderComponent';
 import { FaCalendarAlt } from "react-icons/fa";
 import { FaRegClock } from "react-icons/fa";
 import { GoArrowRight } from "react-icons/go";  
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+// import apiService from '../services/apiService';
 
 function SummaryPage(){
     const [bank, setBank] = useState({totalHours:'16:30',previousMonthBalance:'+ 10:15', bankHours:'- 16:30'});
@@ -14,9 +15,23 @@ function SummaryPage(){
     const options = { day: '2-digit', month: 'long', year: 'numeric' };
     const formattedDate = todayDate.toLocaleDateString('pt-BR', options);
 
+    // useEffect(() => {
+    //     (async () => {
+    //         try {
+    //             const response = await apiService.getTodayHours();
+    //             if (response.status === 200) {
+    //                 console.log(response.data);
+    //             }
+    //         } catch (error) {
+    //             console.log(error);
+    //             // alert("An error occured, try to reload the page");
+    //         }
+    //     })()
+    // }, []);
+
     return(
         <PageContainer>
-            <HeaderComponent text={"Olá, João"} />
+            <HeaderComponent />
             <MainContainer>
                 <div>
                     <FaCalendarAlt size={75}/>

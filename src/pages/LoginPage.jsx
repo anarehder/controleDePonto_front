@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import styled from 'styled-components';
 import HeaderComponent from '../components/HeaderComponent';
 import { GoArrowRight } from "react-icons/go";
@@ -6,13 +6,13 @@ import { LuUserCircle2 } from "react-icons/lu";
 import { RiLockPasswordLine } from "react-icons/ri";
 import apiService from "../services/apiService";
 import { useNavigate } from "react-router-dom";
-import { useUser } from "../contexts/UserContext";
+import { UserContext } from "../contexts/UserContext";
 
 function LoginPage(){
     const [form, setForm] = useState({ username: "", password: "" });
-    const { updateUser } = useUser();
+    const [user, setUser] = useContext(UserContext);
     const navigate = useNavigate();
-
+    console.log(user);
     const handleForm = (e) => {
         e.preventDefault();     setForm((prevForm) => ({ ...prevForm, [e.target.id]: e.target.value }));
     };
@@ -29,7 +29,8 @@ function LoginPage(){
                     token: `Bearer ${token}`,
                     name,
                 };
-                updateUser(userData);
+                localStorage.setItem("user", JSON.stringify({id, token: `Bearer ${token}`, name}));
+                setUser(userData);
                 navigate('/summary')
             }
         } catch (error) {
