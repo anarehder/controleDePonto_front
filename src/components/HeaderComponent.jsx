@@ -1,11 +1,12 @@
 import styled from 'styled-components';
 import logo from '../assets/logo.svg';
+import { useUser } from '../contexts/UserContext';
 
-export default function HeaderComponent(props) {
-
+export default function HeaderComponent() {
+    const { user } = useUser();
     return (
         <Header>
-            <h1>{props.text}</h1>
+            <h1>Olá, {user.name.charAt(0).toUpperCase() + user.name.slice(1)}</h1>
             <img src={logo} alt={"logo"} />
         </Header>
     );
