@@ -1,27 +1,27 @@
 import styled from 'styled-components';
 import HeaderComponent from '../components/HeaderComponent';
 import { GoArrowRight } from "react-icons/go";
-import { useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import ExportToExcel from '../services/ExportToExcel';
 import ReturnComponent from '../components/ReturnSummaryComponent';
+import apiService from '../services/apiService';
+import { UserContext } from '../contexts/UserContext';
 
 function ReportPage(){
-    const name = "João";
-    const todayDate = new Date();
+    const [user] = useContext(UserContext);
     const [form, setForm] = useState({ month: ""});
-    //const [data, setData] = useState([]);
-    const [data, setData] = useState([{data: '01/01/2023', entrada: '08:00', pausa: '12:00', retorno:'14:00', saida:'18:00', horasDia:'8:00' },
-                                    {data: '02/01/2023', entrada: '08:00', pausa: '12:00', retorno:'14:00', saida:'18:00', horasDia:'8:00' }]);
+    const [data, setData] = useState([]);
     const [bank, setBank] = useState({totalHours:'16:30',previousMonthBalance:'+ 10:15', bankHours:'- 16:30'});
 
     const navigate = useNavigate();
     
     useEffect(() => {
-        const token = localStorage.getItem("token");
-        if (!token) return navigate("/");
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [navigate]);
+        const userLocal = localStorage.getItem("user");
+        if (!userLocal) {
+            return navigate("/");
+        }
+    }, []);
 
     const handleForm = (e) => {
         e.preventDefault();
@@ -33,17 +33,30 @@ function ReportPage(){
         if (form.month === "") {
             alert ("Selecione o mês desejado.");
             return;
-        }
-        if (new Date(form.month) > new Date()) {
+        } else if (new Date(form.month) > new Date()) {
             alert ("Selecione um mês válido.");
             return;
-        }
-        alert('DATA VALIDA');        
+        } else {
+            getMonthData();
+        }              
     };
+
+    async function getMonthData(){
+        try {
+            const response = await apiService.getMonthHours(user.token, form.month);
+            if (response.status === 200) {
+                setData(response.data);
+                console.log(response.data);
+            }
+        } catch (error) {
+            console.log(error);
+            alert("An error occured, try to reload the page");
+        }
+    }
 
     return(
         <PageContainer onSubmit={handleSubmit}>
-            <HeaderComponent text={`Olá, ${name}`} />
+            <HeaderComponent />
             <MainContainer>
                 <h1> Selecione um mês</h1>
                 <div>
@@ -64,7 +77,7 @@ function ReportPage(){
                 {data.length !== 0 &&
                     <DataArea>
                         <TableHeader>
-                            <h1>Dia</h1>
+                            <h1>Data</h1>
                             <h1>Entrada</h1>
                             <h1>Pausa</h1>
                             <h1>Retorno</h1>
@@ -75,22 +88,22 @@ function ReportPage(){
                             {data.map((d, i) => (
                                 <div key={i}>
                                     <h2>
-                                        {d.data.slice(0, 2)}
+                                        {d.day.slice(0,10)}
                                     </h2>
                                     <h2>
-                                        {d.entrada}
+                                        {d.entry_time ? d.entry_time.slice(11,16) : "-"}
                                     </h2>
                                     <h2>
-                                        {d.pausa}
+                                        {d.pause_time ? d.pause_time.slice(11,16) : "-"}
                                     </h2>
                                     <h2>
-                                        {d.retorno}
+                                        {d.return_time ? d.return_time.slice(11,16) : "-"}
                                     </h2>
                                     <h2>
-                                        {d.saida}
+                                        {d.exit_time ? d.exit_time.slice(11,16) : "-"}
                                     </h2>
                                     <h2>
-                                        {d.horasDia}
+                                        {d.totalWorkedByDay.slice(11,16)}
                                     </h2>
                                 </div>
                             ))}
@@ -125,7 +138,7 @@ function ReportPage(){
                 }
                 <div>
                     <ReturnComponent />
-                    {(form.month !== "" && data.length !== 0) && <ExportToExcel name={name} month={form.month} data={data} bank={bank} />}
+                    {(form.month !== "" && data.length !== 0) && <ExportToExcel name={user.name} month={form.month} data={data} bank={bank} />}
                 </div>
             </MainContainer>
         </PageContainer>
@@ -186,7 +199,7 @@ const TableHeader = styled.div`
 const Daily = styled.div`
     flex-direction: column;
     justify-content: center;
-    margin: 0 10px;
+    margin: 0;
     padding: 10px;
     gap: 25px;
     text-align: center;

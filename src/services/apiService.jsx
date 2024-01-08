@@ -15,6 +15,11 @@ function postHours(body, token) {
     return axios.post(`${BASE_URL}/bank`, body, { headers: { Authorization: token } });
 }
 
-const apiService = { signIn, getTodayHours, postHours };
+function getMonthHours(token, month) {
+    return axios.get(`${BASE_URL}/bank/month/${month}`, { headers: { Authorization: token } });
+}
+
+
+const apiService = { signIn, getTodayHours, postHours, getMonthHours };
 
 export default apiService;
