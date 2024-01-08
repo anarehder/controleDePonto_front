@@ -22,8 +22,10 @@ function RegistryPage() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        const token = localStorage.getItem("token");
-        if (!token) return navigate("/");
+        const user = localStorage.getItem("user");
+        if (!user){
+            return navigate("/");
+        } 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [navigate]);
 

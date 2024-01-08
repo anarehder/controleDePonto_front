@@ -22,8 +22,10 @@ function SummaryPage(){
     useEffect(() => {
         (async () => {
             try {
-                const token = localStorage.getItem("token");
-                if (!token) return navigate("/");
+                const user = localStorage.getItem("user");
+                if (!user) {
+                    return navigate("/");
+                }
                 const day = dateForApi();
                 const response = await apiService.getTodayHours(user.token, day);
                 if (response.status === 200) {
