@@ -11,6 +11,10 @@ function getTodayHours(token) {
     return axios.get(`${BASE_URL}/bank`, { headers: { Authorization: token } });
 }
 
-const apiService = { signIn, getTodayHours };
+function postHours(body, token) {
+    return axios.post(`${BASE_URL}/bank`, body, { headers: { Authorization: token } });
+}
+
+const apiService = { signIn, getTodayHours, postHours };
 
 export default apiService;

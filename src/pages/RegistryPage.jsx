@@ -5,71 +5,84 @@ import { GiExitDoor } from "react-icons/gi";
 import { RxCountdownTimer } from "react-icons/rx";
 import { PiCoffeeLight } from "react-icons/pi";
 import { GoArrowRight } from "react-icons/go";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import ReturnComponent from '../components/ReturnSummaryComponent';
+import { UserContext } from '../contexts/UserContext';
+import apiService from '../services/apiService';
+// import apiService from '../services/apiService';
 
 function RegistryPage() {
-    const todayDate = new Date();
-    const types = ['entry', 'pause', 'return', 'exit'];
+    const types = ['entry_time', 'pause_time', 'return_time', 'exit_time'];
+    const formatted = {entry_time: 'entrada', pause_time:'pausa', return_time:'retorno', exit_time:'saída'};
+    const [user] = useContext(UserContext);
     const [form, setForm] = useState({ date: "", time: "" });
+    const [selectedType, setSelectedType] = useState("");
 
     const handleForm = (e) => {
         e.preventDefault();
         setForm((prevForm) => ({ ...prevForm, [e.target.id]: e.target.value }));
     };
-
-    const handleSubmit = (e) => {
+    
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        if (form.date === "" || form.time === "") return alert("Todos os campos devem ser preenchidos");
-        console.log(form);
+        if (form.date === "" || form.time === "" || selectedType === "") return alert("Todos os campos devem ser preenchidos");
         try {
             const fullDate = new Date(`${form.date}T${form.time}:00`);
+            const todayDate = new Date();
             if (fullDate > todayDate) {
                 alert("Data inválida!");
                 return;
             }
-            const ISODate = fullDate.toISOString();
+            const body = {"day": form.date, "time": `${form.time}:00`, type: selectedType}
             const [ano, mes, dia] = form.date.split('-');
-            const confirm = window.confirm(`Confirme os dados:\nData ${dia}/${mes}/${ano} e Hora: ${form.time}`);
+            const confirm = window.confirm(`Confirme os dados:\nData ${dia}/${mes}/${ano}, Hora: ${form.time}, Tipo: ${formatted[selectedType]}`);
             if (confirm) {
-                console.log('Usuário confirmou. Prossiga com a ação.', ISODate);
+                const response = await apiService.postHours(body, user.token);
+                if (response.status === 200) {
+                    console.log(response);
+                }
             } else {
                 console.log('Usuário cancelou. Ação cancelada.');
             }
             setForm({ date: '', time: '' });
+            setSelectedType("");
         } catch (error) {
             alert("Data inválida!");
             console.error("Ocorreu um erro:", error.message);
         }
         
     };
+    console.log(selectedType);
+    const selectType = (type) => {
+        selectedType === type ? setSelectedType("") : setSelectedType(type);
+    }
 
     return (
         <PageContainer onSubmit={handleSubmit}>
-            <HeaderComponent text={"Olá, João"} />
+            <HeaderComponent />
             <MainContainer>
                 <h1> Registre aqui seu ponto!</h1>
                 <SubContainer>
                     <Categories>
-                        <Category type={types[0]}>
+                        <Category type={types[0]} selected={selectedType === types[0] ? "yes" : "no"} onClick={() => selectType(types[0])}>
                             <div>
                                 <GiExitDoor size={60} />
                             </div>
                             <p> ENTRADA </p>
                         </Category>
-                        <Category type={types[1]}>
+                        <Category type={types[1]} selected={selectedType === types[1] ? "yes" : "no"} onClick={() => selectType(types[1])}>
                             <div>
                                 <PiCoffeeLight size={60} />
                             </div>
                             <p> PAUSA </p>
                         </Category>
-                        <Category type={types[2]}>
+                        <Category type={types[2]} selected={selectedType === types[2] ? "yes" : "no"} onClick={() => selectType(types[2])}>
                             <div>
                                 <RxCountdownTimer size={60} />
                             </div>
                             <p> RETORNO </p>
                         </Category>
-                        <Category type={types[3]}>
+                        <Category type={types[3]} selected={selectedType === types[3] ? "yes" : "no"} onClick={() => selectType(types[3])}>
                             <div>
                                 <GiEntryDoor size={60} />
                             </div>
@@ -92,7 +105,7 @@ function RegistryPage() {
                             value={form.date}
                             onChange={handleForm}
                         />
-                        <button type="submit" disabled={form.date === "" || form.time === ""}>
+                        <button type="submit" disabled={form.date === "" || form.time === "" || selectedType === ""}>
                             <p>Registrar ponto</p>
                             <GoArrowRight size={24} />
                         </button>
@@ -140,7 +153,8 @@ const Category = styled.div`
     padding: 20px;
     align-items: flex-start;
     border-radius: 16px;
-    background-color: ${(props) => (props.type === 'entry' ? '#58B696' : props.type === 'pause' ? '#65D5E1' :  props.type === 'return' ? '#F5C84B' : '#F87266')}; 
+    background-color: ${(props) => (props.type === 'entry_time' ? '#58B696' : props.type === 'pause_time' ? '#65D5E1' :  props.type === 'return_time' ? '#F5C84B' : '#F87266')}; 
+    border: 2px solid ${(props) => (props.selected === 'yes' ? '#021121' : '#FFFFFF')}; 
     div {
         width: 110px;
         justify-content: flex-end;
