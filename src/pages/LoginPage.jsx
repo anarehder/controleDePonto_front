@@ -10,10 +10,9 @@ import { useUser } from "../contexts/UserContext";
 
 function LoginPage(){
     const [form, setForm] = useState({ username: "", password: "" });
-    const { user, updateUser } = useUser();
+    const { updateUser } = useUser();
     const navigate = useNavigate();
-    console.log(user);
-    
+
     const handleForm = (e) => {
         e.preventDefault();     setForm((prevForm) => ({ ...prevForm, [e.target.id]: e.target.value }));
     };
@@ -43,7 +42,7 @@ function LoginPage(){
 
     return (
         <PageContainer onSubmit={handleSubmit}>
-            <HeaderComponent text={"Login"} />
+            <HeaderComponent/>
             <FormContainer>
                 <SearchBarForm>
                     <LuUserCircle2 size={30} />
