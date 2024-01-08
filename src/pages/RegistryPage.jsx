@@ -5,7 +5,7 @@ import { GiExitDoor } from "react-icons/gi";
 import { RxCountdownTimer } from "react-icons/rx";
 import { PiCoffeeLight } from "react-icons/pi";
 import { GoArrowRight } from "react-icons/go";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ReturnComponent from '../components/ReturnSummaryComponent';
 import { UserContext } from '../contexts/UserContext';
@@ -40,6 +40,7 @@ function RegistryPage() {
         try {
             const fullDate = new Date(`${form.date}T${form.time}:00`);
             const todayDate = new Date();
+
             if (fullDate > todayDate) {
                 alert("Data inválida!");
                 return;
@@ -48,9 +49,11 @@ function RegistryPage() {
             const [ano, mes, dia] = form.date.split('-');
             const confirm = window.confirm(`Confirme os dados:\nData ${dia}/${mes}/${ano}, Hora: ${form.time}, Tipo: ${formatted[selectedType]}`);
             if (confirm) {
+                console.log(body);
                 const response = await apiService.postHours(body, user.token);
                 if (response.status === 200) {
                     console.log(response);
+                    alert("Ponto registrado com sucesso!");
                 }
             } else {
                 console.log('Usuário cancelou. Ação cancelada.');
@@ -58,12 +61,12 @@ function RegistryPage() {
             setForm({ date: '', time: '' });
             setSelectedType("");
         } catch (error) {
-            alert("Data inválida!");
+            alert("Ocorreu um erro");
             console.error("Ocorreu um erro:", error.message);
         }
         
     };
-    console.log(selectedType);
+
     const selectType = (type) => {
         selectedType === type ? setSelectedType("") : setSelectedType(type);
     }
