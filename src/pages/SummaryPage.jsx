@@ -54,7 +54,7 @@ function SummaryPage(){
         const date = `${year}-${month}-${day}`; 
         return date;   
     }
-
+    console.log(data);
     return(
         <PageContainer>
             <HeaderComponent />
@@ -103,7 +103,7 @@ function SummaryPage(){
                     </div>
                     <div>
                         <h2>Saldo Mês Anterior</h2>
-                        <StyledParagraph color={data.bankBalanceLastMonth ? data.bankBalanceLastMonth.slice(0,1) : "0"}> {data.bankBalanceLastMonth ? data.bankBalanceLastMonth : "00:00"} </StyledParagraph>
+                        <StyledParagraph color={data.bankBalanceLastMonth ? data.bankBalanceLastMonth.hoursBankBalance.slice(0,1) : "0"}> {data.bankBalanceLastMonth ? data.bankBalanceLastMonth.hoursBankBalance : "00:00"} </StyledParagraph>
                     </div>
                     <div> 
                         <h2>Banco de Horas</h2>
