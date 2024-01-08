@@ -6,6 +6,7 @@ import { RxCountdownTimer } from "react-icons/rx";
 import { PiCoffeeLight } from "react-icons/pi";
 import { GoArrowRight } from "react-icons/go";
 import { useContext, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import ReturnComponent from '../components/ReturnSummaryComponent';
 import { UserContext } from '../contexts/UserContext';
 import apiService from '../services/apiService';
@@ -18,11 +19,19 @@ function RegistryPage() {
     const [form, setForm] = useState({ date: "", time: "" });
     const [selectedType, setSelectedType] = useState("");
 
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const token = localStorage.getItem("token");
+        if (!token) return navigate("/");
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [navigate]);
+
     const handleForm = (e) => {
         e.preventDefault();
         setForm((prevForm) => ({ ...prevForm, [e.target.id]: e.target.value }));
     };
-    
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (form.date === "" || form.time === "" || selectedType === "") return alert("Todos os campos devem ser preenchidos");

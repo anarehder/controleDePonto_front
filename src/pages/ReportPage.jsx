@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import HeaderComponent from '../components/HeaderComponent';
 import { GoArrowRight } from "react-icons/go";
 import { useState } from 'react';
+import { useNavigate } from "react-router-dom";
 import ExportToExcel from '../services/ExportToExcel';
 import ReturnComponent from '../components/ReturnSummaryComponent';
 
@@ -13,6 +14,15 @@ function ReportPage(){
     const [data, setData] = useState([{data: '01/01/2023', entrada: '08:00', pausa: '12:00', retorno:'14:00', saida:'18:00', horasDia:'8:00' },
                                     {data: '02/01/2023', entrada: '08:00', pausa: '12:00', retorno:'14:00', saida:'18:00', horasDia:'8:00' }]);
     const [bank, setBank] = useState({totalHours:'16:30',previousMonthBalance:'+ 10:15', bankHours:'- 16:30'});
+
+    const navigate = useNavigate();
+    
+    useEffect(() => {
+        const token = localStorage.getItem("token");
+        if (!token) return navigate("/");
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [navigate]);
+
     const handleForm = (e) => {
         e.preventDefault();
         setForm((prevForm) => ({ ...prevForm, [e.target.id]: e.target.value }));

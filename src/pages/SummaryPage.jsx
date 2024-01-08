@@ -4,23 +4,28 @@ import { FaCalendarAlt } from "react-icons/fa";
 import { FaRegClock } from "react-icons/fa";
 import { GoArrowRight } from "react-icons/go";  
 import { useState, useContext, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { UserContext } from "../contexts/UserContext";
 import apiService from '../services/apiService';
 
 function SummaryPage(){
     const [user, setUser] = useContext(UserContext);
     const [data, setData] = useState([]);
-    const [bank, setBank] = useState({totalHours:'16:30',previousMonthBalance:'+ 10:15', bankHours:'- 16:30'});
     const [workedToday, setWorkedToday] = useState([]);
+
     const todayDate = new Date();
     const options = { day: '2-digit', month: 'long', year: 'numeric' };
     const formattedDate = todayDate.toLocaleDateString('pt-BR', options);
-    console.log(data, "data");
+
+    const navigate = useNavigate();
+
     useEffect(() => {
         (async () => {
             try {
-                const response = await apiService.getTodayHours(user.token);
+                const token = localStorage.getItem("token");
+                if (!token) return navigate("/");
+                const day = dateForApi();
+                const response = await apiService.getTodayHours(user.token, day);
                 if (response.status === 200) {
                     setData(response.data);
                     const formattedTime = {};
@@ -33,10 +38,18 @@ function SummaryPage(){
                 }
             } catch (error) {
                 console.log(error);
-                // alert("An error occured, try to reload the page");
+                alert("An error occured, try to reload the page");
             }
         })()
     }, []);
+
+    function dateForApi() {
+        const year = todayDate.getFullYear();
+        const month = String(todayDate.getMonth() + 1).padStart(2, '0');
+        const day = String(todayDate.getDate()).padStart(2, '0');
+        const date = `${year}/${month}/${day}`; 
+        return date;   
+    }
 
     return(
         <PageContainer>
@@ -49,7 +62,7 @@ function SummaryPage(){
                     <h1> Registros de hoje, {formattedDate}</h1>
                     <div>
                         <FaRegClock size={40}/>
-                        {(workedToday.entry_time && workedToday.pause_time && workedToday.return_time && workedToday.exit_time ) &&
+                        {workedToday.lenght === 0 &&
                         <Registry>Ainda não há registros de hoje</Registry>}
                         <ul>
                             {workedToday.entry_time && <Registry> {workedToday.entry_time} </Registry>}

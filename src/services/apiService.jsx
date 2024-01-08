@@ -7,8 +7,8 @@ function signIn(body) {
     return axios.post(`${BASE_URL}/login`, body);
 }
 
-function getTodayHours(token) {
-    return axios.get(`${BASE_URL}/bank`, { headers: { Authorization: token } });
+function getTodayHours(token, day) {
+    return axios.get(`${BASE_URL}/bank/today/${day}`, { headers: { Authorization: token } });
 }
 
 function postHours(body, token) {
