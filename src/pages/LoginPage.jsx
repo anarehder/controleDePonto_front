@@ -6,15 +6,16 @@ import { LuUserCircle2 } from "react-icons/lu";
 import { RiLockPasswordLine } from "react-icons/ri";
 import apiService from "../services/apiService";
 import { useNavigate } from "react-router-dom";
+import { useUser } from "../contexts/UserContext";
 
 function LoginPage(){
     const [form, setForm] = useState({ username: "", password: "" });
+    const { user, updateUser } = useUser();
     const navigate = useNavigate();
-    console.log(form);
+    console.log(user);
     
     const handleForm = (e) => {
-        e.preventDefault();
-        setForm((prevForm) => ({ ...prevForm, [e.target.id]: e.target.value }));
+        e.preventDefault();     setForm((prevForm) => ({ ...prevForm, [e.target.id]: e.target.value }));
     };
 
     async function handleSubmit(e) {
@@ -23,12 +24,17 @@ function LoginPage(){
         try {
             const response = await apiService.signIn(form)
             if (response.status === 200) {
-                const { token, id } = await response.data
-                localStorage.setItem("token", `Bearer ${token}`)
-                localStorage.setItem("id", `${id}`)
+                const { id, name, token } = response.data;
+                const userData = {
+                    id,
+                    token: `Bearer ${token}`,
+                    name,
+                };
+                updateUser(userData);
                 navigate('/summary')
             }
         } catch (error) {
+            console.log(error);
             if (error.response.status === 401 || error.response.status === 400 ) alert("Incorrect email or password, please try again.")
         } finally {
             setForm({ username: '', password: '' });

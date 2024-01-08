@@ -6,12 +6,14 @@ import AdminPage from "./pages/AdminPage";
 import SummaryPage from "./pages/SummaryPage";
 import RegistryPage from "./pages/RegistryPage";
 import ReportPage from "./pages/ReportPage";
+import { UserProvider } from "./contexts/UserContext";
 
 function App() {
 
   return (
     <AppContainer>
       <BrowserRouter>
+        <UserProvider>
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/login" element={<LoginPage />} />
@@ -20,7 +22,8 @@ function App() {
             <Route path="/registry" element={<RegistryPage />} />
             <Route path="/report" element={<ReportPage />} />
           </Routes>
-        </BrowserRouter >
+        </UserProvider>
+      </BrowserRouter >
     </AppContainer >
   )
 }
