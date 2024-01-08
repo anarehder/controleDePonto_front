@@ -9,7 +9,7 @@ import { UserContext } from "../contexts/UserContext";
 import apiService from '../services/apiService';
 
 function SummaryPage(){
-    const [user, setUser] = useContext(UserContext);
+    const [user] = useContext(UserContext);
     const [data, setData] = useState([]);
     const [workedToday, setWorkedToday] = useState([]);
 
@@ -22,21 +22,23 @@ function SummaryPage(){
     useEffect(() => {
         (async () => {
             try {
-                const user = localStorage.getItem("user");
-                if (!user) {
+                const userLocal = localStorage.getItem("user");
+                if (!userLocal) {
                     return navigate("/");
                 }
                 const day = dateForApi();
                 const response = await apiService.getTodayHours(user.token, day);
                 if (response.status === 200) {
                     setData(response.data);
-                    const formattedTime = {};
-                    Object.keys(response.data.hourControls).forEach(propriedade => {
-                        if (propriedade.slice(-4) === 'time' && response.data.hourControls[propriedade]) {
-                            formattedTime[propriedade] = response.data.hourControls[propriedade].slice(11, 16);
-                        }
-                    });
-                    setWorkedToday(formattedTime);
+                    if (response.data.hourControls){
+                        const formattedTime = {};
+                        Object.keys(response.data.hourControls).forEach(propriedade => {
+                            if (propriedade.slice(-4) === 'time' && response.data.hourControls[propriedade]) {
+                                formattedTime[propriedade] = response.data.hourControls[propriedade].slice(11, 16);
+                            }
+                        });
+                        setWorkedToday(formattedTime);
+                    }
                 }
             } catch (error) {
                 console.log(error);
@@ -49,7 +51,7 @@ function SummaryPage(){
         const year = todayDate.getFullYear();
         const month = String(todayDate.getMonth() + 1).padStart(2, '0');
         const day = String(todayDate.getDate()).padStart(2, '0');
-        const date = `${year}/${month}/${day}`; 
+        const date = `${year}-${month}-${day}`; 
         return date;   
     }
 
@@ -64,7 +66,7 @@ function SummaryPage(){
                     <h1> Registros de hoje, {formattedDate}</h1>
                     <div>
                         <FaRegClock size={40}/>
-                        {workedToday.lenght === 0 &&
+                        {workedToday.length === 0 &&
                         <Registry>Ainda não há registros de hoje</Registry>}
                         <ul>
                             {workedToday.entry_time && <Registry> {workedToday.entry_time} </Registry>}
