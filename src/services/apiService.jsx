@@ -7,8 +7,7 @@ function signIn(body) {
     return axios.post(`${BASE_URL}/login`, body);
 }
 
-function getTodayHours() {
-    const token = `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbXBsb3llZUlkIjoyLCJpYXQiOjE3MDQ2NzQ5NDl9.ajr9fEqyXGZ9O0pUPCsRxd1jX-eOYJ0qJipIezOmsCc`;
+function getTodayHours(token) {
     return axios.get(`${BASE_URL}/bank`, { headers: { Authorization: token } });
 }
 

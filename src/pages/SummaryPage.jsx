@@ -3,31 +3,40 @@ import HeaderComponent from '../components/HeaderComponent';
 import { FaCalendarAlt } from "react-icons/fa";
 import { FaRegClock } from "react-icons/fa";
 import { GoArrowRight } from "react-icons/go";  
-import { useEffect, useState } from "react";
+import { useState, useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
-// import apiService from '../services/apiService';
+import { UserContext } from "../contexts/UserContext";
+import apiService from '../services/apiService';
 
 function SummaryPage(){
+    const [user, setUser] = useContext(UserContext);
+    const [data, setData] = useState([]);
     const [bank, setBank] = useState({totalHours:'16:30',previousMonthBalance:'+ 10:15', bankHours:'- 16:30'});
-    const [workedToday, setWorkedToday] = useState(["08:05","14:10"]);
-    //const [workedToday, setWorkedToday] = useState([]);
+    const [workedToday, setWorkedToday] = useState([]);
     const todayDate = new Date();
     const options = { day: '2-digit', month: 'long', year: 'numeric' };
     const formattedDate = todayDate.toLocaleDateString('pt-BR', options);
-
-    // useEffect(() => {
-    //     (async () => {
-    //         try {
-    //             const response = await apiService.getTodayHours();
-    //             if (response.status === 200) {
-    //                 console.log(response.data);
-    //             }
-    //         } catch (error) {
-    //             console.log(error);
-    //             // alert("An error occured, try to reload the page");
-    //         }
-    //     })()
-    // }, []);
+    console.log(data, "data");
+    useEffect(() => {
+        (async () => {
+            try {
+                const response = await apiService.getTodayHours(user.token);
+                if (response.status === 200) {
+                    setData(response.data);
+                    const formattedTime = {};
+                    Object.keys(response.data.hourControls).forEach(propriedade => {
+                        if (propriedade.slice(-4) === 'time' && response.data.hourControls[propriedade]) {
+                            formattedTime[propriedade] = response.data.hourControls[propriedade].slice(11, 16);
+                        }
+                    });
+                    setWorkedToday(formattedTime);
+                }
+            } catch (error) {
+                console.log(error);
+                // alert("An error occured, try to reload the page");
+            }
+        })()
+    }, []);
 
     return(
         <PageContainer>
@@ -40,13 +49,14 @@ function SummaryPage(){
                     <h1> Registros de hoje, {formattedDate}</h1>
                     <div>
                         <FaRegClock size={40}/>
-                        {workedToday.length === 0 ? 
-                        <Registry>Ainda não há registros de hoje</Registry> :
+                        {(workedToday.entry_time && workedToday.pause_time && workedToday.return_time && workedToday.exit_time ) &&
+                        <Registry>Ainda não há registros de hoje</Registry>}
                         <ul>
-                        {workedToday.map((hour, i) => (
-                        <Registry key={i}>{hour}</Registry>
-                        ))}
-                        </ul>}
+                            {workedToday.entry_time && <Registry> {workedToday.entry_time} </Registry>}
+                            {workedToday.pause_time && <Registry> {workedToday.pause_time} </Registry>}
+                            {workedToday.return_time && <Registry> {workedToday.return_time} </Registry>}
+                            {workedToday.exit_time && <Registry> {workedToday.exit_time} </Registry>}
+                        </ul>
                     </div>
                     <div>
                         <Link to={'/registry'} >
@@ -68,19 +78,19 @@ function SummaryPage(){
                 <h1> Relatório Resumido</h1>
                     <div>
                         <p>Trabalhado hoje</p>
-                        <p> 08:00 </p>
+                        {/* <p> {data.hourControls.day ? data.hourControls.day : "00:00"} </p> */}
                     </div>
                     <div>
                         <h2>Total mês</h2>
-                        <p> {bank.totalHours} </p>
+                        <p> {data.bankHours ? data.bankHours : "00:00"} </p>
                     </div>
                     <div>
                         <h2>Saldo Mês Anterior</h2>
-                        <StyledParagraph color={bank.previousMonthBalance.slice(0,1)}> {bank.previousMonthBalance} </StyledParagraph>
+                        <StyledParagraph color={data.bankBalanceLastMonth ? data.bankBalanceLastMonth.slice(0,1) : "0"}> {data.bankBalanceLastMonth ? data.bankBalanceLastMonth : "00:00"} </StyledParagraph>
                     </div>
                     <div> 
                         <h2>Banco de Horas</h2>
-                        <StyledParagraph color={bank.bankHours.slice(0,1)}> {bank.bankHours} </StyledParagraph>
+                        <StyledParagraph color={data.bankHours ? data.bankHours.slice(0,1) : "0"}> {data.bankHours ? data.bankHours : "00:00"} </StyledParagraph>
                     </div>
             </SummaryReport>
         </PageContainer>

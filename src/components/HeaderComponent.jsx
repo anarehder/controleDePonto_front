@@ -10,7 +10,7 @@ export default function HeaderComponent() {
         <Header>
             {
                 user.name ?
-                <h1>Olá, ${user.name.charAt(0).toUpperCase() + user.name.slice(1)}</h1> :
+                <h1>Olá, {user.name.charAt(0).toUpperCase() + user.name.slice(1)}</h1> :
                 <h1>Login</h1>
             }
             
