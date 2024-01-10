@@ -7,6 +7,7 @@ import SummaryPage from "./pages/SummaryPage";
 import RegistryPage from "./pages/RegistryPage";
 import ReportPage from "./pages/ReportPage";
 import UserProvider from "./contexts/UserContext";
+import SummaryPageAdmin from "./pages/SummaryPageAdmin";
 
 function App() {
 
@@ -18,6 +19,7 @@ function App() {
             <Route path="/" element={<HomePage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/admin" element={<AdminPage />} />
+            <Route path="/adminsummary" element={<SummaryPageAdmin />} />
             <Route path="/summary" element={<SummaryPage />} />
             <Route path="/registry" element={<RegistryPage />} />
             <Route path="/report" element={<ReportPage />} />

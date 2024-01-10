@@ -6,6 +6,7 @@ import apiService from '../services/apiService';
 import { UserContext } from '../contexts/UserContext';
 import Logout from '../components/LogoutComponent';
 import ExportToExcel from '../services/ExportToExcel';
+import ReturnComponent from '../components/ReturnSummaryComponent';
 
 function AdminPage(){
     const [user, setUser] = useContext(UserContext);

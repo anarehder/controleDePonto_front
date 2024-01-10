@@ -29,7 +29,7 @@ function SummaryPage(){
                     return navigate("/");
                 }
                 if (user.name === "Rodrigo Mouzinho"){
-                    navigate("/admin");
+                    navigate("/adminsummary");
                 }
                 const day = dateForApi();
                 const response = await apiService.getTodayHours(user.token, day);
