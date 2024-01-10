@@ -28,6 +28,9 @@ function SummaryPage(){
                 if (!userLocal) {
                     return navigate("/");
                 }
+                if (user.name === "Rodrigo Mouzinho"){
+                    navigate("/admin");
+                }
                 const day = dateForApi();
                 const response = await apiService.getTodayHours(user.token, day);
                 if (response.status === 200) {

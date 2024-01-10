@@ -14,6 +14,9 @@ function HomePage(){
         const storedUser = JSON.parse(localStorage.getItem('user'));
         if (storedUser) {
             setUser(storedUser);
+            if (storedUser.name === "Rodrigo Mouzinho"){
+                navigate("/admin");
+            }
             navigate("/summary");
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps

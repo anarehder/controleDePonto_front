@@ -1,37 +1,64 @@
 import styled from 'styled-components';
 import HeaderComponent from '../components/HeaderComponent';
-import { useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { GoArrowRight } from "react-icons/go";
+import apiService from '../services/apiService';
+import { UserContext } from '../contexts/UserContext';
 
 function AdminPage(){
-    const [form, setForm] = useState({ month: "", employeeID: ""});
-    const employees = [
-        { id: 1, name: 'João' },
-        { id: 2, name: 'Maria' },
-        { id: 3, name: 'Pedro' },
-    ];
+    const [user, setUser] = useContext(UserContext);
+    const [form, setForm] = useState({ month: "", employeeId: ""});
+    const [data, setData] = useState([]);
+    const [employees, setEmployees] = useState([]);
+    // [
+    //     { id: 1, name: 'João' },
+    //     { id: 2, name: 'Maria' },
+    //     { id: 3, name: 'Pedro' },
+    // ];
     console.log(form);
+    console.log(data);
+    useEffect(() => {
+        (async () => {
+            try {
+                const response = await apiService.getUsers(user.token)
+                if (response.status === 200) {
+                    setEmployees(response.data);
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        })()
+    }, []);
 
     const handleForm = (e) => {
         e.preventDefault();
         setForm((prevForm) => ({ ...prevForm, [e.target.id]: e.target.value }));
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         if (form.month === "") {
             alert ("Selecione o mês desejado.");
             return;
-        }
-        if (form.employeeID === "") {
+        } else if (form.employeeId === "") {
             alert ("Selecione um funcionário.");
             return;
-        }
-        if (new Date(form.month) > new Date()) {
+        } else if (new Date(form.month) > new Date()) {
             alert ("Selecione um mês válido.");
             return;
+        } else {
+            alert('DATA E NOME OK!');   
+            try {
+                const response = await apiService.getUserReport(form, user.token);
+                if (response.status === 200) {
+                    setData(response.data);
+                }
+            } catch (error) {
+                console.log(error);
+            } finally {
+                setForm({ month: '', employeeId: '' });
+            }
         }
-        alert('DATA E NOME OK!');        
     };
 
     return(
@@ -40,7 +67,7 @@ function AdminPage(){
             <MainContainer>
                 <InputArea>
                     <h1>Selecione um funcionário:</h1>
-                    <select onChange={handleForm} id="employeeID" value={form.employeeID}>
+                    <select onChange={handleForm} id="employeeId" value={form.employeeId}>
                         <option value="">Nome do Funcionário</option>
                         {employees.map(employee => (
                             <option key={employee.id} value={employee.id}>
@@ -64,10 +91,10 @@ function AdminPage(){
                     <GoArrowRight size={24} />
                 </button>   
             </MainContainer>    
-            {(form.employeeID && form.month !== "") && (
+            {(form.employeeId && form.month !== "") && (
                 <div>
                     <h2>Detalhes do Funcionário:</h2>
-                    <p>ID: {form.employeeID}</p>
+                    <p>ID: {form.employeeId}</p>
                 </div>
             )}
         </PageContainer>
@@ -93,7 +120,8 @@ const MainContainer = styled.form`
     }
 `
 
-const InputArea = styled.form`
+const InputArea = styled.div`
+    flex-direction: column;
     width: 500px;
     height: 115px;
     align-items: center;

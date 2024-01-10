@@ -23,6 +23,16 @@ function signOut(token) {
     return axios.post(`${BASE_URL}/login/logout`, { headers: { Authorization: token } });
 }
 
-const apiService = { signIn, getTodayHours, postHours, getMonthHours, signOut };
+function getUsers(token) {
+    return axios.get(`${BASE_URL}/users`, { headers: { Authorization: token } });
+}
+
+function getUserReport(token, body) {
+    console.log(token, body);
+    return axios.post(`${BASE_URL}/bank/userReport`, body, { headers: { Authorization: token } });
+}
+
+
+const apiService = { signIn, getTodayHours, postHours, getMonthHours, signOut, getUsers, getUserReport };
 
 export default apiService;

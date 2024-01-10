@@ -31,6 +31,9 @@ function LoginPage(){
                 };
                 localStorage.setItem("user", JSON.stringify({id, token: `Bearer ${token}`, name}));
                 setUser(userData);
+                if (userData.name === "Rodrigo Mouzinho"){
+                    navigate("/admin");
+                }
                 navigate('/summary')
             }
         } catch (error) {
