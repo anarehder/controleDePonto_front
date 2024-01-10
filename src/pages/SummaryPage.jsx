@@ -12,7 +12,7 @@ import Logout from '../components/LogoutComponent';
 function SummaryPage(){
     const [user] = useContext(UserContext);
     const [data, setData] = useState([]);
-    const [workedToday, setWorkedToday] = useState([]);
+    const [workedToday, setWorkedToday] = useState("");
     const [workedTodayHours, setWorkedTodayHours] = useState("00:00");
 
     const todayDate = new Date();
@@ -20,7 +20,10 @@ function SummaryPage(){
     const formattedDate = todayDate.toLocaleDateString('pt-BR', options);
     
     const navigate = useNavigate();
-
+    if (workedToday && workedTodayHours === "00:00") {
+        calculateTodayWorkedHours();
+    }
+    console.log(data);
     useEffect(() => {
         (async () => {
             try {
@@ -57,38 +60,38 @@ function SummaryPage(){
     }, []);
     
     function calculateTodayWorkedHours () {
-        let total1 = "0";
-        let total2 = "0";
+        let total1;
+        let total2;
         if (workedToday.entry_time && workedToday.pause_time){
-            [hoursEntry, minutesEntry] = workedToday.entry_time.split(":");
-            [hoursPause, minutesPause] = workedToday.pause_time.split(":");
+            const [hoursEntry, minutesEntry] = workedToday.entry_time.split(":").map(Number);
+            const [hoursPause, minutesPause] = workedToday.pause_time.split(":").map(Number);
             const totalMinutes = (hoursPause*60) + minutesPause - (hoursEntry*60) - minutesEntry;
             const hours = (totalMinutes / 60).toFixed(2);
             const minutes = totalMinutes % 60;
             total1 =`${String(hours).slice(0,-3).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
-            if (!workedToday.return_time && !workedToday.exit_time) {
-                setWorkedTodayHours (total1);
+            if (!workedToday.return_time || !workedToday.exit_time) {
+                setWorkedTodayHours(total1);
             }
         }
         if (workedToday.return_time && workedToday.exit_time){
-            [hoursReturn, minutesReturn] = workedToday.return_time.split(":");
-            [hoursExit, minutesExit] = workedToday.exit_time.split(":");
+            const [hoursReturn, minutesReturn] = workedToday.return_time.split(":").map(Number);
+            const [hoursExit, minutesExit] = workedToday.exit_time.split(":").map(Number);
             const totalMinutes = (hoursExit*60) + minutesExit - (hoursReturn*60) - minutesReturn;
             const hours = (totalMinutes / 60).toFixed(2);
             const minutes = totalMinutes % 60;
             total2 =`${String(hours).slice(0,-3).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
-            if (!workedToday.entry_time && !workedToday.pause_time) {
-                setWorkedTodayHours (total2);
+            if (!workedToday.entry_time || !workedToday.pause_time) {
+                setWorkedTodayHours(total2);
             }
         }
-        if (total1 !== "0" && total2 !== "0"){
-            [hours1, minutes1] = workedToday.total1.split(":");
-            [hours2, minutes2] = workedToday.total2.split(":");
+        if (workedToday.entry_time && workedToday.pause_time && workedToday.return_time && workedToday.exit_time){
+            const [hours1, minutes1] = workedToday.total1.split(":").map(Number);
+            const [hours2, minutes2] = workedToday.total2.split(":").map(Number);
             const totalMinutes = (hours1*60) + minutes1 + (hours2*60) + minutes2;
             const hours = (totalMinutes / 60).toFixed(2);
             const minutes = totalMinutes % 60;
             const total =`${String(hours).slice(0,-3).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
-            setWorkedTodayHours (total);
+            setWorkedTodayHours(total);
         }
     }
 
@@ -99,7 +102,7 @@ function SummaryPage(){
         const date = `${year}-${month}-${day}`; 
         return date;   
     }
-    console.log(data);
+
     return(
         <PageContainer>
             <HeaderComponent />
@@ -143,17 +146,23 @@ function SummaryPage(){
                         <p> {workedTodayHours} </p>
                     </div>
                     <div>
-                        <h2>Total mês</h2>
-                        <p> {data.bankHours ? data.bankHours : "00:00"} </p>
+                        <h3>*calculado sempre que o turno estiver completo</h3>
                     </div>
                     <div>
-                        <h2>Saldo Mês Anterior</h2>
-                        <StyledParagraph color={data.bankBalanceLastMonth ? data.bankBalanceLastMonth.hoursBankBalance.slice(0,1) : "0"}> {data.bankBalanceLastMonth ? data.bankBalanceLastMonth.hoursBankBalance : "00:00"} </StyledParagraph>
+                        <p>Total mês</p>
+                        <p> {data.bankHours ? data.bankHours.workedHoursByMonth : "00:00"} </p>
                     </div>
-                    <div> 
-                        <h2>Banco de Horas</h2>
-                        <StyledParagraph color={data.bankHours ? data.bankHours.slice(0,1) : "0"}> {data.bankHours ? data.bankHours : "00:00"} </StyledParagraph>
+                    <div>
+                        <h3>*não considerados dias não finalizados</h3>
                     </div>
+                    {/* <div>
+                        <p>Saldo Mês Anterior</p>
+                        <StyledParagraph color={data ? data.bankBalanceLastMonth.hoursBankBalance.slice(0,1) : "0"}> {data ? data.bankBalanceLastMonth.hoursBankBalance : "00:00"} </StyledParagraph>
+                    </div> */}
+                    {/* <div> 
+                        <p>Banco de Horas</p>
+                        <StyledParagraph color={data ? data.bankHours.hoursBankBalance.slice(0,1) : "0"}> {data ? data.bankHours.hoursBankBalance : "00:00"} </StyledParagraph>
+                    </div> */}
             </SummaryReport>
             <Logout />
         </PageContainer>
@@ -209,17 +218,24 @@ const Registry = styled.div`
 
 const SummaryReport = styled.div`
     width: 300px;
-    gap: 15px;
     flex-direction: column;
     background-color: #F0F5F9;
     border-radius: 16px;
-    padding: 10px 20px;
+    padding: 20px;
     margin-top: 15px;
     div {
         align-items: center;
     }
-    h1 {
-        margin-bottom: 10px;
+    h1,h2 {
+        margin-top: 0;
+    }
+    p {
+        margin-top: 20px;
+    }
+    h3 {
+        font-style: italic;
+        font-size: 13px;
+        margin-top: 5px;
     }
 `
 
