@@ -13,6 +13,7 @@ function SummaryPage(){
     const [user] = useContext(UserContext);
     const [data, setData] = useState([]);
     const [workedToday, setWorkedToday] = useState([]);
+    const [workedTodayHours, setWorkedTodayHours] = useState("00:00");
 
     const todayDate = new Date();
     const options = { day: '2-digit', month: 'long', year: 'numeric' };
@@ -51,6 +52,42 @@ function SummaryPage(){
             }
         })()
     }, []);
+    
+    function calculateTodayWorkedHours () {
+        let total1 = "0";
+        let total2 = "0";
+        if (workedToday.entry_time && workedToday.pause_time){
+            [hoursEntry, minutesEntry] = workedToday.entry_time.split(":");
+            [hoursPause, minutesPause] = workedToday.pause_time.split(":");
+            const totalMinutes = (hoursPause*60) + minutesPause - (hoursEntry*60) - minutesEntry;
+            const hours = (totalMinutes / 60).toFixed(2);
+            const minutes = totalMinutes % 60;
+            total1 =`${String(hours).slice(0,-3).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
+            if (!workedToday.return_time && !workedToday.exit_time) {
+                setWorkedTodayHours (total1);
+            }
+        }
+        if (workedToday.return_time && workedToday.exit_time){
+            [hoursReturn, minutesReturn] = workedToday.return_time.split(":");
+            [hoursExit, minutesExit] = workedToday.exit_time.split(":");
+            const totalMinutes = (hoursExit*60) + minutesExit - (hoursReturn*60) - minutesReturn;
+            const hours = (totalMinutes / 60).toFixed(2);
+            const minutes = totalMinutes % 60;
+            total2 =`${String(hours).slice(0,-3).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
+            if (!workedToday.entry_time && !workedToday.pause_time) {
+                setWorkedTodayHours (total2);
+            }
+        }
+        if (total1 !== "0" && total2 !== "0"){
+            [hours1, minutes1] = workedToday.total1.split(":");
+            [hours2, minutes2] = workedToday.total2.split(":");
+            const totalMinutes = (hours1*60) + minutes1 + (hours2*60) + minutes2;
+            const hours = (totalMinutes / 60).toFixed(2);
+            const minutes = totalMinutes % 60;
+            const total =`${String(hours).slice(0,-3).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
+            setWorkedTodayHours (total);
+        }
+    }
 
     function dateForApi() {
         const year = todayDate.getFullYear();
