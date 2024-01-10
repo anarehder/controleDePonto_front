@@ -4,6 +4,7 @@ import { useContext, useEffect, useState } from 'react';
 import { GoArrowRight } from "react-icons/go";
 import apiService from '../services/apiService';
 import { UserContext } from '../contexts/UserContext';
+import Logout from '../components/LogoutComponent';
 
 function AdminPage(){
     const [user, setUser] = useContext(UserContext);
@@ -97,6 +98,7 @@ function AdminPage(){
                     <p>ID: {form.employeeId}</p>
                 </div>
             )}
+            <Logout />
         </PageContainer>
     )
 }
