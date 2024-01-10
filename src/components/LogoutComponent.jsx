@@ -1,0 +1,41 @@
+import styled from 'styled-components';
+import { useNavigate } from "react-router-dom";
+import { GoArrowRight } from "react-icons/go";
+import { useContext } from 'react';
+import { UserContext } from "../contexts/UserContext";
+import apiService from '../services/apiService';
+
+export default function Logout() {
+
+    const [user, setUser] = useContext(UserContext);
+    const navigate = useNavigate();
+
+    const removeUser = () => {
+        (async () => {
+            try {
+                const response = await apiService.signOut(user.token);
+                if (response.status === 200) {
+                    setUser({});
+                    localStorage.removeItem("user");
+                    navigate("/")
+                }
+            } catch (error) {
+                console.log(error);
+                alert("An error occured, try to reload the page");
+            }
+        })()
+    };
+
+    return (
+        <ReturnButton onClick={() => removeUser()}>
+            Logout
+            <GoArrowRight size={24} />
+        </ReturnButton>
+    );
+}
+
+const ReturnButton = styled.button`
+    width: 150px;
+    margin-top: 40px;
+`
+

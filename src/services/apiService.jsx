@@ -19,7 +19,10 @@ function getMonthHours(token, month) {
     return axios.get(`${BASE_URL}/bank/month/${month}`, { headers: { Authorization: token } });
 }
 
+function signOut(token) {
+    return axios.post(`${BASE_URL}/login/logout`, { headers: { Authorization: token } });
+}
 
-const apiService = { signIn, getTodayHours, postHours, getMonthHours };
+const apiService = { signIn, getTodayHours, postHours, getMonthHours, signOut };
 
 export default apiService;

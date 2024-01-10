@@ -7,6 +7,7 @@ import { useState, useContext, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { UserContext } from "../contexts/UserContext";
 import apiService from '../services/apiService';
+import Logout from '../components/LogoutComponent';
 
 function SummaryPage(){
     const [user] = useContext(UserContext);
@@ -41,6 +42,10 @@ function SummaryPage(){
                     }
                 }
             } catch (error) {
+                const userLocal = localStorage.getItem("user");
+                if (!userLocal) {
+                    return navigate("/");
+                }
                 console.log(error);
                 alert("An error occured, try to reload the page");
             }
@@ -110,6 +115,7 @@ function SummaryPage(){
                         <StyledParagraph color={data.bankHours ? data.bankHours.slice(0,1) : "0"}> {data.bankHours ? data.bankHours : "00:00"} </StyledParagraph>
                     </div>
             </SummaryReport>
+            <Logout />
         </PageContainer>
     )
 }
@@ -127,11 +133,16 @@ const MainContainer = styled.div`
     width: 70%;
     justify-content: flex-start;
     gap: 40px;
+    @media (max-width: 900px) {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
 `
 
 const MainInfo = styled.div`
     flex-direction: column;
     gap: 25px;
+    flex-wrap: wrap;
     div {
         justify-content: flex-start;
         align-items: center;
@@ -143,7 +154,8 @@ const MainInfo = styled.div`
         flex-direction: row;
     }
     button {
-        width: 280px;
+        max-width: 280px;
+        gap: 15px;
     }
 `
 
