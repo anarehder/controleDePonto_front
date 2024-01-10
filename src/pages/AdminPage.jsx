@@ -13,7 +13,7 @@ function AdminPage(){
     const [data, setData] = useState([]);
     const [employees, setEmployees] = useState([]);
     const [bank, setBank] = useState({totalHours:'16:30',previousMonthBalance:'+ 10:15', bankHours:'- 16:30'});
-    const [employeeName, setEmployeeName] = useState("");
+    const [employeeInfo, setEmployeeInfo] = useState({ month: "", name: ""});
 
     console.log(data);
     console.log(form.month);
@@ -52,7 +52,7 @@ function AdminPage(){
             try {
                 form.employeeId = Number(form.employeeId);
                 const findEmployee = employees.find(e => e.id === form.employeeId);
-                setEmployeeName(findEmployee.name);
+                setEmployeeInfo({name: findEmployee.name, month:form.month});
                 const response = await apiService.getUserReport(user.token, form);
                 if (response.status === 200) {
                     setData(response.data);
@@ -103,7 +103,7 @@ function AdminPage(){
                 :
                 <AlertView> Selecione os dados para visualizar </AlertView>
             }
-            {data.length !== 0 && <ExportToExcel name={employeeName} month={form.month} data={data} bank={bank} />}
+            {data.length !== 0 && <ExportToExcel name={employeeInfo.name} month={employeeInfo.month} data={data} bank={bank} />}
             <Logout />
         </PageContainer>
     )
