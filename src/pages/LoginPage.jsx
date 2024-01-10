@@ -12,7 +12,7 @@ function LoginPage(){
     const [form, setForm] = useState({ username: "", password: "" });
     const [user, setUser] = useContext(UserContext);
     const navigate = useNavigate();
-    console.log(user);
+
     const handleForm = (e) => {
         e.preventDefault();     setForm((prevForm) => ({ ...prevForm, [e.target.id]: e.target.value }));
     };
