@@ -140,7 +140,7 @@ function SummaryPage(){
                 <h1> Relatório Resumido</h1>
                     <div>
                         <p>Trabalhado hoje</p>
-                        {/* <p> {data.hourControls.day ? data.hourControls.day : "00:00"} </p> */}
+                        <p> {workedTodayHours} </p>
                     </div>
                     <div>
                         <h2>Total mês</h2>
