@@ -5,19 +5,18 @@ import { GoArrowRight } from "react-icons/go";
 import apiService from '../services/apiService';
 import { UserContext } from '../contexts/UserContext';
 import Logout from '../components/LogoutComponent';
+import ExportToExcel from '../services/ExportToExcel';
 
 function AdminPage(){
     const [user, setUser] = useContext(UserContext);
-    const [form, setForm] = useState({ month: "", employeeId: ""});
+    const [form, setForm] = useState({ month: "", employeeId: 0});
     const [data, setData] = useState([]);
     const [employees, setEmployees] = useState([]);
-    // [
-    //     { id: 1, name: 'João' },
-    //     { id: 2, name: 'Maria' },
-    //     { id: 3, name: 'Pedro' },
-    // ];
-    console.log(form);
+    const [bank, setBank] = useState({totalHours:'16:30',previousMonthBalance:'+ 10:15', bankHours:'- 16:30'});
+    const [employeeName, setEmployeeName] = useState("");
+
     console.log(data);
+    console.log(form.month);
     useEffect(() => {
         (async () => {
             try {
@@ -34,6 +33,7 @@ function AdminPage(){
     const handleForm = (e) => {
         e.preventDefault();
         setForm((prevForm) => ({ ...prevForm, [e.target.id]: e.target.value }));
+        setData([]);
     };
 
     const handleSubmit = async (e) => {
@@ -41,7 +41,7 @@ function AdminPage(){
         if (form.month === "") {
             alert ("Selecione o mês desejado.");
             return;
-        } else if (form.employeeId === "") {
+        } else if (form.employeeId === 0) {
             alert ("Selecione um funcionário.");
             return;
         } else if (new Date(form.month) > new Date()) {
@@ -50,7 +50,10 @@ function AdminPage(){
         } else {
             alert('DATA E NOME OK!');   
             try {
-                const response = await apiService.getUserReport(form, user.token);
+                form.employeeId = Number(form.employeeId);
+                const findEmployee = employees.find(e => e.id === form.employeeId);
+                setEmployeeName(findEmployee.name);
+                const response = await apiService.getUserReport(user.token, form);
                 if (response.status === 200) {
                     setData(response.data);
                 }
@@ -92,12 +95,15 @@ function AdminPage(){
                     <GoArrowRight size={24} />
                 </button>   
             </MainContainer>    
-            {(form.employeeId && form.month !== "") && (
+            {(form.employeeId && form.month !== "") ?
                 <div>
                     <h2>Detalhes do Funcionário:</h2>
                     <p>ID: {form.employeeId}</p>
                 </div>
-            )}
+                :
+                <AlertView> Selecione os dados para visualizar </AlertView>
+            }
+            {data.length !== 0 && <ExportToExcel name={employeeName} month={form.month} data={data} bank={bank} />}
             <Logout />
         </PageContainer>
     )
@@ -135,4 +141,11 @@ const InputArea = styled.div`
         width: 70%;
         margin-top: 25px;
     }
+`
+
+const AlertView = styled.h1`
+    margin: 70px;
+    background-color: #F0F5F9;
+    padding: 15px;
+    border-radius: 24px;
 `

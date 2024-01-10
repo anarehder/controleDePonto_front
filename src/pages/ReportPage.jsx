@@ -13,7 +13,7 @@ function ReportPage(){
     const [form, setForm] = useState({ month: ""});
     const [data, setData] = useState([]);
     const [bank, setBank] = useState({totalHours:'16:30',previousMonthBalance:'+ 10:15', bankHours:'- 16:30'});
-
+    console.log(data);
     const navigate = useNavigate();
     
     useEffect(() => {

@@ -28,7 +28,6 @@ function getUsers(token) {
 }
 
 function getUserReport(token, body) {
-    console.log(token, body);
     return axios.post(`${BASE_URL}/bank/userReport`, body, { headers: { Authorization: token } });
 }
 

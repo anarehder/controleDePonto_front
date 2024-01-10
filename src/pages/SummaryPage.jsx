@@ -18,7 +18,7 @@ function SummaryPage(){
     const todayDate = new Date();
     const options = { day: '2-digit', month: 'long', year: 'numeric' };
     const formattedDate = todayDate.toLocaleDateString('pt-BR', options);
-
+    
     const navigate = useNavigate();
 
     useEffect(() => {
