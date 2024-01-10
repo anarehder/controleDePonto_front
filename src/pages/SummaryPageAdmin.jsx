@@ -22,22 +22,21 @@ function SummaryPageAdmin(){
     return(
         <PageContainer>
             <HeaderComponent />
-            <div>
+            <MainContainer>
                 <Link to={'/admin'} >
                     <button>
                         <p>Relatórios funcionários</p>
                         <GoArrowRight size={24} />
                     </button>
                 </Link>
-                <Link to={'/admin'} >
+                <Link to={'/createuser'} >
                     <button>
                         <p>Criar usuário</p>
                         <GoArrowRight size={24} />
                     </button>
                 </Link>
                 <Logout />
-            </div>
-            
+            </MainContainer>
         </PageContainer>
     )
 }
@@ -49,7 +48,18 @@ const PageContainer = styled.div`
     flex-direction: column;
     align-items: center;
     button {
-        height: 75px;
-        margin: 50px 40px;
+        height: 65px;
+        gap: 20px;
     }
+    a {
+        height: 65px;
+        margin-top: 40px;
+    }
+`
+
+const MainContainer = styled.div`
+    width: 70%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
 `

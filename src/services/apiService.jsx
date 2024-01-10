@@ -31,7 +31,10 @@ function getUserReport(token, body) {
     return axios.post(`${BASE_URL}/bank/userReport`, body, { headers: { Authorization: token } });
 }
 
+function createUser(token, body) {
+    return axios.post(`${BASE_URL}/users`, body, { headers: { Authorization: token } });
+}
 
-const apiService = { signIn, getTodayHours, postHours, getMonthHours, signOut, getUsers, getUserReport };
+const apiService = { signIn, getTodayHours, postHours, getMonthHours, signOut, getUsers, getUserReport, createUser };
 
 export default apiService;
