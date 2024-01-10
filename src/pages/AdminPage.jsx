@@ -106,6 +106,7 @@ function AdminPage(){
             }
             {data.length !== 0 && <ExportToExcel name={employeeInfo.name} month={employeeInfo.month} data={data} bank={bank} />}
             <Logout />
+            <ReturnComponent name={user.name} />
         </PageContainer>
     )
 }

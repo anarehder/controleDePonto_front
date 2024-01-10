@@ -137,7 +137,7 @@ function ReportPage(){
                     </DataArea>
                 }
                 <div>
-                    <ReturnComponent />
+                    <ReturnComponent name={user.name} />
                     {(form.month !== "" && data.length !== 0) && <ExportToExcel name={user.name} month={form.month} data={data} bank={bank} />}
                 </div>
             </MainContainer>

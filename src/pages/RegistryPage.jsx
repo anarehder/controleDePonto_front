@@ -10,7 +10,6 @@ import { useNavigate } from "react-router-dom";
 import ReturnComponent from '../components/ReturnSummaryComponent';
 import { UserContext } from '../contexts/UserContext';
 import apiService from '../services/apiService';
-// import apiService from '../services/apiService';
 
 function RegistryPage() {
     const types = ['entry_time', 'pause_time', 'return_time', 'exit_time'];
@@ -125,7 +124,7 @@ function RegistryPage() {
                         </button>
                     </InputArea>
                 </SubContainer>
-                <ReturnComponent />
+                <ReturnComponent name={user.name} />
             </MainContainer>
         </PageContainer>
     )
