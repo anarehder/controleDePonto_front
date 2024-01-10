@@ -96,6 +96,9 @@ const FormContainer = styled.form`
     align-items: flex-start;
     gap: 25px;
     margin: 3% 15%;
+    input {
+        width: 100%;
+    }
     button {
         padding: 10px 15px;
         justify-content: space-between;
