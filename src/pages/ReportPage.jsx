@@ -12,8 +12,8 @@ function ReportPage(){
     const [user] = useContext(UserContext);
     const [form, setForm] = useState({ month: ""});
     const [data, setData] = useState([]);
-    const [bank, setBank] = useState({totalHours:'16:30',previousMonthBalance:'+ 10:15', bankHours:'- 16:30'});
-    console.log(data);
+    const [hours, setHours] = useState([]);
+
     const navigate = useNavigate();
     
     useEffect(() => {
@@ -46,7 +46,7 @@ function ReportPage(){
             const response = await apiService.getMonthHours(user.token, form.month);
             if (response.status === 200) {
                 setData(response.data);
-                console.log(response.data);
+                setHours(response.data.hourControls);
             }
         } catch (error) {
             console.log(error);
@@ -85,7 +85,7 @@ function ReportPage(){
                             <h1>Horas/Dia</h1>
                         </TableHeader>
                         <Daily>
-                            {data.map((d, i) => (
+                            {hours.map((d, i) => (
                                 <div key={i}>
                                     <h2>
                                         {d.day.slice(0,10)}
@@ -114,31 +114,49 @@ function ReportPage(){
                                     Total Horas no Mês
                                 </h1>
                                 <h2>
-                                    {bank.totalHours}
+                                    {data.bankHours.workedHoursByMonth}
                                 </h2>
+                            </div>
+                            <div>
+                                <h1>
+                                    Saldo Horas no Mês
+                                    
+                                </h1>
+                                
+                                <StyledParagraph color={data.bankHours.totalHoursByMonth.slice(0, 1)}>
+                                    {data.bankHours.totalHoursByMonth}
+                                </StyledParagraph>
+                                
                             </div>
                             <div>
                                 <h1>
                                     Saldo Mês Anterior
                                 </h1>
-                                <StyledParagraph color={bank.previousMonthBalance.slice(0, 1)}>
-                                    {bank.previousMonthBalance}
+                                <StyledParagraph color={data.bankBalanceLastMonth.hoursBankBalance.slice(0, 1)}>
+                                    {data.bankBalanceLastMonth.hoursBankBalance}
                                 </StyledParagraph>
                             </div>
                             <div>
                                 <h1>
                                     Banco de Horas
                                 </h1>
-                                <StyledParagraph color={bank.bankHours.slice(0, 1)}>
-                                    {bank.bankHours}
+                                <StyledParagraph color={data.bankHours.hoursBankBalance.slice(0, 1)}>
+                                    {data.bankHours.hoursBankBalance}
                                 </StyledParagraph>
                             </div>
+                            
                         </TableFooter>
+                        <h3>
+                            *o saldo do mês é calculado considerando as 176 horas de cada mês que devem ser cumpridas ( Saldo Mês = Total Horas no Mês - 176 ).
+                        </h3>
+                        <h3>
+                            *o banco de horas considera o saldo do mês anterios e o saldo do mês atual ( Banco de Horas = Saldo Mês Atual + Saldo Mês Anterior ).
+                        </h3>
                     </DataArea>
                 }
                 <div>
                     <ReturnComponent name={user.name} />
-                    {(form.month !== "" && data.length !== 0) && <ExportToExcel name={user.name} month={form.month} data={data} bank={bank} />}
+                    {(form.month !== "" && data) && <ExportToExcel name={user.name} month={form.month} data={data} />}
                 </div>
             </MainContainer>
         </PageContainer>
@@ -175,9 +193,11 @@ const InputArea = styled.form`
 const DataArea = styled.div`
     flex-direction: column;
     justify-content: center;
-    gap: 20px; 
     border-radius: 24px;
     background-color:#F0F5F9;
+    div {
+        margin: 10px 0;
+    }
     h2 {
         font-weight: 400;
         font-size: 25px;
@@ -185,6 +205,10 @@ const DataArea = styled.div`
     }
     h1 {
         width: 125px;
+    }
+    h3 {
+        text-align: center;
+        margin: 5px 0;
     }
 `
 
@@ -212,7 +236,7 @@ const TableFooter = styled.div`
     padding: 10px;
     border-top: 2px solid #E6E6E6;
     div {
-        padding: 0 35px;
+        padding: 0 25px;
         text-align: center;
         align-items: center;
         gap: 20px;

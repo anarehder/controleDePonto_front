@@ -2,7 +2,7 @@ import * as XLSX from 'xlsx';
 import styled from 'styled-components';
 import { GoArrowRight } from "react-icons/go";
 
-const ExportToExcel = ({ name, month, data, bank }) => {
+const ExportToExcel = ({ name, month, data }) => {
     const exportToExcel = () => {
         console.log(data);
         console.log(month);
@@ -10,12 +10,13 @@ const ExportToExcel = ({ name, month, data, bank }) => {
         const headers = ["Dia", "Entrada", "Pausa", "Retorno", "Saída", "Horas/Dia"];
 
         const footer = [
-            ["Total Horas no Mês", bank.totalHours],
-            ["Saldo Mês Anterior", bank.previousMonthBalance],
-            ["Banco de Horas", bank.bankHours]
+            ["Total Horas no Mês", data.bankHours.workedHoursByMonth],
+            ["Saldo Mês Atual", data.bankHours.totalHoursByMonth],
+            ["Saldo Mês Anterior", data.bankBalanceLastMonth.hoursBankBalance],
+            ["Banco de Horas", data.bankHours.hoursBankBalance]
         ];
 
-        const dataRows = data.map(item => [item.day.slice(0,10), 
+        const dataRows = data.hourControls.map(item => [item.day.slice(0,10), 
                                         item.entry_time ? item.entry_time.slice(11,16) : "-",
                                         item.pause_time ? item.pause_time.slice(11,16) : "-", 
                                         item.return_time ? item.return_time.slice(11,16) : "-", 
