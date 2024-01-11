@@ -51,7 +51,6 @@ function RegistryPage() {
                 console.log(body);
                 const response = await apiService.postHours(body, user.token);
                 if (response.status === 200) {
-                    console.log(response);
                     alert("Ponto registrado com sucesso!");
                 }
             } else {
