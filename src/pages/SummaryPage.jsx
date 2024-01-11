@@ -23,7 +23,7 @@ function SummaryPage(){
     if (workedToday && workedTodayHours === "00:00") {
         calculateTodayWorkedHours();
     }
-    console.log(data);
+
     useEffect(() => {
         (async () => {
             try {
@@ -155,14 +155,14 @@ function SummaryPage(){
                     <div>
                         <h3>*não considerados dias não finalizados</h3>
                     </div>
-                    {/* <div>
+                    <div>
                         <p>Saldo Mês Anterior</p>
-                        <StyledParagraph color={data ? data.bankBalanceLastMonth.hoursBankBalance.slice(0,1) : "0"}> {data ? data.bankBalanceLastMonth.hoursBankBalance : "00:00"} </StyledParagraph>
-                    </div> */}
-                    {/* <div> 
+                        <StyledParagraph color={data.bankBalanceLastMonth ? data.bankBalanceLastMonth.hoursBankBalance.slice(0,1) : "0"}> {data.bankBalanceLastMonth ? data.bankBalanceLastMonth.hoursBankBalance : "00:00"} </StyledParagraph>
+                    </div>
+                    <div> 
                         <p>Banco de Horas</p>
-                        <StyledParagraph color={data ? data.bankHours.hoursBankBalance.slice(0,1) : "0"}> {data ? data.bankHours.hoursBankBalance : "00:00"} </StyledParagraph>
-                    </div> */}
+                        <StyledParagraph color={data.bankHours ? data.bankHours.hoursBankBalance.slice(0,1) : "0"}> {data.bankHours ? data.bankHours.hoursBankBalance : "00:00"} </StyledParagraph>
+                    </div>
             </SummaryReport>
             <Logout />
         </PageContainer>
