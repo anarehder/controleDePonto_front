@@ -1,7 +1,7 @@
 import axios from "axios";
 
-// const BASE_URL = process.env.REACT_APP_API_URL;
-const BASE_URL = 'http://localhost:4000';
+
+const BASE_URL = 'http://129.148.45.107:4000';
 
 function signIn(body) {
     return axios.post(`${BASE_URL}/login`, body);
