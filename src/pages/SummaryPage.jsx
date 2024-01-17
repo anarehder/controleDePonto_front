@@ -31,7 +31,7 @@ function SummaryPage(){
                 if (!userLocal) {
                     return navigate("/");
                 }
-                if (user.name === "Rodrigo Mouzinho"){
+                if (user.name === "admin"){
                     navigate("/adminsummary");
                 }
                 const day = dateForApi();
