@@ -16,8 +16,6 @@ function AdminPage(){
     const [employees, setEmployees] = useState([]);
     const [employeeInfo, setEmployeeInfo] = useState({ month: "", name: ""});
 
-    console.log(data);
-    console.log(form.month);
     useEffect(() => {
         (async () => {
             try {
@@ -49,7 +47,6 @@ function AdminPage(){
             alert ("Selecione um mês válido.");
             return;
         } else {
-            alert('DATA E NOME OK!');   
             try {
                 form.employeeId = Number(form.employeeId);
                 const findEmployee = employees.find(e => e.id === form.employeeId);
@@ -62,9 +59,6 @@ function AdminPage(){
             } catch (error) {
                 console.log(error);
             }
-            // } finally {
-            //     setForm({ month: '', employeeId: '' });
-            // }
         }
     };
 
@@ -112,7 +106,7 @@ function AdminPage(){
                         {hours.map((d, i) => (
                             <div key={i}>
                                 <h2>
-                                    {d.day.slice(0, 10)}
+                                    {d?.day.slice(0, 10)}
                                 </h2>
                                 <h2>
                                     {d.entry_time ? d.entry_time.slice(11, 16) : "-"}
@@ -127,7 +121,7 @@ function AdminPage(){
                                     {d.exit_time ? d.exit_time.slice(11, 16) : "-"}
                                 </h2>
                                 <h2>
-                                    {d.totalWorkedByDay.slice(11, 16)}
+                                    {d?.totalWorkedByDay.slice(11, 16)}
                                 </h2>
                             </div>
                         ))}
@@ -138,7 +132,7 @@ function AdminPage(){
                                 Total Horas no Mês
                             </h1>
                             <h2>
-                                {data.bankHours.workedHoursByMonth}
+                                {data.bankHours?.workedHoursByMonth ? data.bankHours.workedHoursByMonth : "00:00"}
                             </h2>
                         </div>
                         <div>
@@ -147,8 +141,8 @@ function AdminPage(){
 
                             </h1>
 
-                            <StyledParagraph color={data.bankHours.totalHoursByMonth.slice(0, 1)}>
-                                {data.bankHours.totalHoursByMonth}
+                            <StyledParagraph color={data?.bankHours?.totalHoursByMonth.slice(0, 1)}>
+                                {data.bankHours?.totalHoursByMonth ? data.bankHours.totalHoursByMonth : "00:00"}
                             </StyledParagraph>
 
                         </div>
@@ -156,16 +150,16 @@ function AdminPage(){
                             <h1>
                                 Saldo Mês Anterior
                             </h1>
-                            <StyledParagraph color={data.bankBalanceLastMonth.hoursBankBalance.slice(0, 1)}>
-                                {data.bankBalanceLastMonth.hoursBankBalance}
+                            <StyledParagraph color={data?.bankBalanceLastMonth?.hoursBankBalance.slice(0, 1)}>
+                                {data?.bankBalanceLastMonth?.hoursBankBalance}
                             </StyledParagraph>
                         </div>
                         <div>
                             <h1>
                                 Banco de Horas
                             </h1>
-                            <StyledParagraph color={data.bankHours.hoursBankBalance.slice(0, 1)}>
-                                {data.bankHours.hoursBankBalance}
+                            <StyledParagraph color={data?.bankHours?.hoursBankBalance.slice(0, 1)}>
+                                {data.bankHours?.hoursBankBalance ? data.bankHours.hoursBankBalance : "00:00"}
                             </StyledParagraph>
                         </div>
 

@@ -1,7 +1,6 @@
 import axios from "axios";
 
-
-const BASE_URL = 'http://129.148.45.107:4000';
+const BASE_URL = import.meta.env.VITE_REACT_APP_API_URL;
 
 function signIn(body) {
     return axios.post(`${BASE_URL}/login`, body);
