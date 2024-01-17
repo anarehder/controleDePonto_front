@@ -106,7 +106,7 @@ function AdminPage(){
                         {hours.map((d, i) => (
                             <div key={i}>
                                 <h2>
-                                    {d?.day.slice(0, 10)}
+                                    {d?.day.slice(0, 10).reverse()}
                                 </h2>
                                 <h2>
                                     {d.entry_time ? d.entry_time.slice(11, 16) : "-"}
