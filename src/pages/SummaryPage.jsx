@@ -63,8 +63,8 @@ function SummaryPage(){
         let total1;
         let total2;
         if (workedToday.entry_time && workedToday.pause_time){
-            const [hoursEntry, minutesEntry] = workedToday.entry_time.split(":").map(Number);
-            const [hoursPause, minutesPause] = workedToday.pause_time.split(":").map(Number);
+            const [hoursEntry, minutesEntry] = workedToday?.entry_time.split(":").map(Number);
+            const [hoursPause, minutesPause] = workedToday?.pause_time.split(":").map(Number);
             const totalMinutes = (hoursPause*60) + minutesPause - (hoursEntry*60) - minutesEntry;
             const hours = (totalMinutes / 60).toFixed(2);
             const minutes = totalMinutes % 60;
@@ -74,8 +74,8 @@ function SummaryPage(){
             }
         }
         if (workedToday.return_time && workedToday.exit_time){
-            const [hoursReturn, minutesReturn] = workedToday.return_time.split(":").map(Number);
-            const [hoursExit, minutesExit] = workedToday.exit_time.split(":").map(Number);
+            const [hoursReturn, minutesReturn] = workedToday?.return_time.split(":").map(Number);
+            const [hoursExit, minutesExit] = workedToday?.exit_time.split(":").map(Number);
             const totalMinutes = (hoursExit*60) + minutesExit - (hoursReturn*60) - minutesReturn;
             const hours = (totalMinutes / 60).toFixed(2);
             const minutes = totalMinutes % 60;
@@ -85,8 +85,8 @@ function SummaryPage(){
             }
         }
         if (workedToday.entry_time && workedToday.pause_time && workedToday.return_time && workedToday.exit_time){
-            const [hours1, minutes1] = workedToday.total1.split(":").map(Number);
-            const [hours2, minutes2] = workedToday.total2.split(":").map(Number);
+            const [hours1, minutes1] = total1.split(":").map(Number);
+            const [hours2, minutes2] = total2.split(":").map(Number);
             const totalMinutes = (hours1*60) + minutes1 + (hours2*60) + minutes2;
             const hours = (totalMinutes / 60).toFixed(2);
             const minutes = totalMinutes % 60;
