@@ -10,10 +10,10 @@ const ExportToExcel = ({ name, month, data }) => {
         const headers = ["Dia", "Entrada", "Pausa", "Retorno", "Saída", "Horas/Dia"];
 
         const footer = [
-            ["Total Horas no Mês", data.bankHours.workedHoursByMonth],
-            ["Saldo Mês Atual", data.bankHours.totalHoursByMonth],
+            ["Total Horas no Mês", data.bankHours?.workedHoursByMonth ? data.bankHours?.workedHoursByMonth : "00:00"],
+            ["Saldo Mês Atual", data.bankHours?.totalHoursByMonth ? data.bankHours?.totalHoursByMonth : "00:00"],
             ["Saldo Mês Anterior", data.bankBalanceLastMonth.hoursBankBalance],
-            ["Banco de Horas", data.bankHours.hoursBankBalance]
+            ["Banco de Horas", data.bankHours?.hoursBankBalance ? data.bankHours?.hoursBankBalance : "00:00"]
         ];
 
         const dataRows = data.hourControls.map(item => [item.day.slice(0,10), 
