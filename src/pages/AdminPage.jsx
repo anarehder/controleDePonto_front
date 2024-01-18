@@ -7,8 +7,10 @@ import { UserContext } from '../contexts/UserContext';
 import Logout from '../components/LogoutComponent';
 import ExportToExcel from '../services/ExportToExcel';
 import ReturnComponent from '../components/ReturnSummaryComponent';
+import { useNavigate } from "react-router-dom";
 
 function AdminPage(){
+    const navigate = useNavigate();
     const [user, setUser] = useContext(UserContext);
     const [form, setForm] = useState({ month: "", employeeId: 0});
     const [data, setData] = useState([]);
@@ -17,6 +19,9 @@ function AdminPage(){
     const [employeeInfo, setEmployeeInfo] = useState({ month: "", name: ""});
 
     useEffect(() => {
+        if (user.name !== "admin"){
+            navigate("/summary");
+        }
         (async () => {
             try {
                 const response = await apiService.getUsers(user.token)

@@ -9,12 +9,15 @@ import Logout from "../components/LogoutComponent";
 
 function SummaryPageAdmin(){
     const navigate = useNavigate();
-    const [,setUser] = useContext(UserContext);
+    const [user, setUser] = useContext(UserContext);
     
     useEffect(() => {
         const storedUser = JSON.parse(localStorage.getItem('user'));
         if (!storedUser) {
             navigate("/");
+        }
+        if (user.name !== "admin"){
+            navigate("/summary");
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [navigate]);

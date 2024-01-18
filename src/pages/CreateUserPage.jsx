@@ -17,6 +17,9 @@ function CreateUserPage(){
         if (!storedUser) {
             navigate("/");
         }
+        if (user.name !== "admin"){
+            navigate("/summary");
+        }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [navigate]);
     
