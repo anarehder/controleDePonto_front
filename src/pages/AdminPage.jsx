@@ -106,7 +106,7 @@ function AdminPage(){
                         {hours.map((d, i) => (
                             <div key={i}>
                                 <h2>
-                                    {d.day && `${today.slice(8,10)}-${today.slice(5,7)}-${today.slice(0,4)}`}
+                                    {d.day && `${d.day.slice(8,10)}-${d.day.slice(5,7)}-${d.day.slice(0,4)}`}
                                 </h2>
                                 <h2>
                                     {d.entry_time ? d.entry_time.slice(11, 16) : "-"}
@@ -174,7 +174,7 @@ function AdminPage(){
                 :
                 <AlertView> Selecione os dados para visualizar </AlertView>
             }
-            {data !== 0 && <ExportToExcel name={employeeInfo.name} month={employeeInfo.month} data={data} />}
+            {(data !== 0 && employeeInfo.name !="" )&& <ExportToExcel name={employeeInfo.name} month={employeeInfo.month} data={data} />}
             <Logout />
             <ReturnComponent name={user.name} />
         </PageContainer>
