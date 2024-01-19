@@ -59,8 +59,12 @@ function RegistryPage() {
             setForm({ date: '', time: '' });
             setSelectedType("");
         } catch (error) {
-            alert("Ocorreu um erro");
-            console.error("Ocorreu um erro:", error.message);
+            if(error.response.status === 401){
+                alert("Verifique se os dados enviados estão corretos, não pode haver pausa antes da entrada e nem saída antes do retorno")
+            } else {
+                alert("Ocorreu um erro");
+                console.error("Ocorreu um erro:", error.message);
+            }
         }
         
     };
