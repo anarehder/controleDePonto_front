@@ -38,8 +38,7 @@ function LoginPage(){
                 }
             }
         } catch (error) {
-            console.log(error);
-            if (error.response.status === 401 || error.response.status === 400 ) alert("Incorrect email or password, please try again.")
+            if (error.response.status === 401 || error.response.status === 400 ) alert("Dados incorretos, tente novamente");
         } finally {
             setForm({ username: '', password: '' });
         }

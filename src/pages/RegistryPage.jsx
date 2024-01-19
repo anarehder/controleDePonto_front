@@ -48,22 +48,24 @@ function RegistryPage() {
             const [ano, mes, dia] = form.date.split('-');
             const confirm = window.confirm(`Confirme os dados:\nData ${dia}/${mes}/${ano}, Hora: ${form.time}, Tipo: ${formatted[selectedType]}`);
             if (confirm) {
-                console.log(body);
                 const response = await apiService.postHours(body, user.token);
                 if (response.status === 200) {
                     alert("Ponto registrado com sucesso!");
                 }
             } else {
-                console.log('Usuário cancelou. Ação cancelada.');
+                alert('Ação cancelada.');
             }
             setForm({ date: '', time: '' });
             setSelectedType("");
         } catch (error) {
-            if(error.response.status === 401){
+            const erroDataLimite = "Não é possível alterar/adicionar datas anteriores a 40 dias atrás";
+            if(error.response.data === erroDataLimite){
+                alert(erroDataLimite)
+            } 
+            else if (error.response.status === 401){
                 alert("Verifique se os dados enviados estão corretos, não pode haver pausa antes da entrada e nem saída antes do retorno")
-            } else {
+            } else{
                 alert("Ocorreu um erro");
-                console.error("Ocorreu um erro:", error.message);
             }
         }
         

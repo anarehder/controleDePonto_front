@@ -53,8 +53,7 @@ function SummaryPage(){
                 if (!userLocal) {
                     return navigate("/");
                 }
-                console.log(error);
-                alert("An error occured, try to reload the page");
+                alert("Ocorreu um erro, tente novamente");
             }
         })()
     }, []);

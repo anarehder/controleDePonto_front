@@ -38,7 +38,7 @@ function CreateUserPage(){
                 alert("Usuário criado com sucesso!");
             }
         } catch (error) {
-            console.log(error);
+            alert("Ocorreu um erro, tente novamente!");
         } finally {
             setForm({ name:"", username: "", password: "" , checkPassword:""});
         }

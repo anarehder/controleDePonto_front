@@ -29,7 +29,7 @@ function AdminPage(){
                     setEmployees(response.data);
                 }
             } catch (error) {
-                console.log(error);
+                alert("Ocorreu um erro, tente novamente");
             }
         })()
     }, []);
@@ -62,7 +62,7 @@ function AdminPage(){
                     setHours(response.data.hourControls);
                 }
             } catch (error) {
-                console.log(error);
+                alert("Ocorreu um erro, tente novamente");
             }
         }
     };

@@ -4,8 +4,6 @@ import { GoArrowRight } from "react-icons/go";
 
 const ExportToExcel = ({ name, month, data }) => {
     const exportToExcel = () => {
-        console.log(data);
-        console.log(month);
         const title = [name, month];
         const headers = ["Dia", "Entrada", "Pausa", "Retorno", "Saída", "Horas/Dia"];
 

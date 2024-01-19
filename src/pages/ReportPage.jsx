@@ -49,8 +49,7 @@ function ReportPage(){
                 setHours(response.data.hourControls);
             }
         } catch (error) {
-            console.log(error);
-            alert("An error occured, try to reload the page");
+            alert("Ocorreu um erro, tente novamente");
         }
     }
 
