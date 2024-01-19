@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = 'http://100.101.1.42:4000';
+const BASE_URL = "http://100.101.1.42:4000";
 
 function signIn(body) {
     return axios.post(`${BASE_URL}/login`, body);
