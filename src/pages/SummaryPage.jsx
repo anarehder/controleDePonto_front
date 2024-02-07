@@ -20,7 +20,7 @@ function SummaryPage(){
     const formattedDate = todayDate.toLocaleDateString('pt-BR', options);
     
     const navigate = useNavigate();
-    console.log(workedToday);
+
     useEffect(() => {
         (async () => {
             try {
@@ -34,7 +34,6 @@ function SummaryPage(){
                 const day = dateForApi();
                 const response = await apiService.getTodayHours(user.token, day);
                 if (response.status === 200) {
-                    console.log(response.data);
                     setData(response.data);
                     setWorkedToday(response.data.hourControls)
                     calculateTodayWorkedHours(response.data.hourControls);
@@ -59,7 +58,6 @@ function SummaryPage(){
         
         const hours = Math.floor(totalMinutes / 60).toString().padStart(2, '0'); // Calcula as horas totais
         const minutes = (totalMinutes % 60).toString().padStart(2, '0'); // Calcula os minutos restantes
-        console.log(hours, minutes);
         setWorkedTodayHours(`${hours}:${minutes}`)
     }
 
@@ -81,15 +79,19 @@ function SummaryPage(){
                 <MainInfo>
                     <h1> Registros de hoje, {formattedDate}</h1>
                     <div>
-                        <FaRegClock size={40}/>
+                        <FaRegClock size={40} />
                         {workedToday.length === 0 &&
-                        <Registry>Ainda não há registros de hoje</Registry>}
-                        <ul>
-                            {workedToday.entry_time && <Registry> {workedToday.entry_time} </Registry>}
-                            {workedToday.pause_time && <Registry> {workedToday.pause_time} </Registry>}
-                            {workedToday.return_time && <Registry> {workedToday.return_time} </Registry>}
-                            {workedToday.exit_time && <Registry> {workedToday.exit_time} </Registry>}
-                        </ul>
+                            <Registry>Ainda não há registros de hoje</Registry>}
+                        {workedToday.length !== 0 &&
+                            <ul>
+                                {workedToday.map((item, index) => (
+                                    <div key={index}>
+                                        {item.entry_time && <li><Registry>{item.entry_time.slice(11, 16)}</Registry></li>}
+                                        {item.exit_time && <li><Registry>{item.exit_time.slice(11, 16)}</Registry></li>}
+                                    </div>
+                                ))}
+                            </ul>
+                        }
                     </div>
                     <div>
                         <Link to={'/registry'} >
