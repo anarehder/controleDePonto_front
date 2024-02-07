@@ -23,13 +23,15 @@ function LoginPage(){
         try {
             const response = await apiService.signIn(form)
             if (response.status === 200) {
-                const { id, name, token } = response.data;
+                console.log(response.data);
+                const { id, name, token, username } = response.data;
                 const userData = {
                     id,
                     token: `Bearer ${token}`,
                     name,
+                    username,
                 };
-                localStorage.setItem("user", JSON.stringify({id, token: `Bearer ${token}`, name}));
+                localStorage.setItem("user", JSON.stringify({id, token: `Bearer ${token}`, name, username}));
                 setUser(userData);
                 if (userData.name === "admin" ){
                     navigate("/adminsummary");
@@ -37,6 +39,7 @@ function LoginPage(){
                     navigate('/summary');
                 }
             }
+            console.log(response);
         } catch (error) {
             if (error.response.status === 401 || error.response.status === 400 ) alert("Dados incorretos, tente novamente");
         } finally {

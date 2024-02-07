@@ -26,6 +26,7 @@ function SummaryPageAdmin(){
         <PageContainer>
             <HeaderComponent />
             <MainContainer>
+                {user.name}
                 <Link to={'/admin'} >
                     <button>
                         <p>Relatórios funcionários</p>
