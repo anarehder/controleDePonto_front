@@ -35,6 +35,6 @@ export default function Logout() {
 
 const ReturnButton = styled.button`
     width: 150px;
-    margin-top: 40px;
+    margin: 20px;
 `
 

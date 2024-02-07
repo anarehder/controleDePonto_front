@@ -135,6 +135,12 @@ function SummaryPage(){
                                 <GoArrowRight size={24} />
                             </button>
                         </Link>
+                        <Link to={'/password'} >
+                            <button>
+                                <p>Alterar senha</p>
+                                <GoArrowRight size={24} />
+                            </button>
+                        </Link>
                     </div>
                 </MainInfo>
             </MainContainer>

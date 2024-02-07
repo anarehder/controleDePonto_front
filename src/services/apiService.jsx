@@ -38,6 +38,10 @@ function checkSession(body) {
     return axios.post(`${BASE_URL}/session`, body);
 }
 
-const apiService = { signIn, getTodayHours, postHours, getMonthHours, signOut, getUsers, getUserReport, createUser, checkSession };
+function changePassword(token, body) {
+    return axios.post(`${BASE_URL}/users/changepassword`, body, { headers: { Authorization: token } });
+}
+
+const apiService = { signIn, getTodayHours, postHours, getMonthHours, signOut, getUsers, getUserReport, createUser, checkSession, changePassword };
 
 export default apiService;
