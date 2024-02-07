@@ -78,8 +78,8 @@ function ReportPage(){
                         <TableHeader>
                             <h1>Data</h1>
                             <h1>Entrada</h1>
-                            <h1>Pausa</h1>
-                            <h1>Retorno</h1>
+                            {/* <h1>Pausa</h1>
+                            <h1>Retorno</h1> */}
                             <h1>Saída</h1>
                             <h1>Horas/Dia</h1>
                         </TableHeader>
@@ -92,12 +92,12 @@ function ReportPage(){
                                     <h2>
                                         {d.entry_time ? d.entry_time.slice(11,16) : "-"}
                                     </h2>
-                                    <h2>
+                                    {/* <h2>
                                         {d.pause_time ? d.pause_time.slice(11,16) : "-"}
                                     </h2>
                                     <h2>
                                         {d.return_time ? d.return_time.slice(11,16) : "-"}
-                                    </h2>
+                                    </h2> */}
                                     <h2>
                                         {d.exit_time ? d.exit_time.slice(11,16) : "-"}
                                     </h2>

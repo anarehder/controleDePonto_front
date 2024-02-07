@@ -5,7 +5,7 @@ import { GoArrowRight } from "react-icons/go";
 const ExportToExcel = ({ name, month, data }) => {
     const exportToExcel = () => {
         const title = [name, month];
-        const headers = ["Dia", "Entrada", "Pausa", "Retorno", "Saída", "Horas/Dia"];
+        const headers = ["Dia", "Entrada", "Saída", "Horas/Dia"];
 
         const footer = [
             ["Total Horas no Mês", data.bankHours?.workedHoursByMonth ? data.bankHours?.workedHoursByMonth : "00:00"],
@@ -16,8 +16,6 @@ const ExportToExcel = ({ name, month, data }) => {
 
         const dataRows = data.hourControls.map(item => [item.day.slice(0,10), 
                                         item.entry_time ? item.entry_time.slice(11,16) : "-",
-                                        item.pause_time ? item.pause_time.slice(11,16) : "-", 
-                                        item.return_time ? item.return_time.slice(11,16) : "-", 
                                         item.exit_time ? item.exit_time.slice(11,16) : "-", 
                                         item.totalWorkedByDay.slice(11,16)]);
         
