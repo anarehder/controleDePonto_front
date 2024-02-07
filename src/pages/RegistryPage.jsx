@@ -44,7 +44,8 @@ function RegistryPage() {
                 alert("Data inválida!");
                 return;
             }
-            const body = {"day": form.date, "time": `${form.time}:00`, type: selectedType}
+            const formattedType = selectedType === "entry_time" || selectedType === "return_time" ? "entry_time" : "exit_time";
+            const body = {"day": form.date, "time": `${form.time}:00`, type: formattedType}
             const [ano, mes, dia] = form.date.split('-');
             const confirm = window.confirm(`Confirme os dados:\nData ${dia}/${mes}/${ano}, Hora: ${form.time}, Tipo: ${formatted[selectedType]}`);
             if (confirm) {
