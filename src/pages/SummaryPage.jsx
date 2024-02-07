@@ -177,6 +177,7 @@ const MainInfo = styled.div`
     ul {
         display: flex;
         flex-direction: row;
+        gap: 10px;
     }
     button {
         max-width: 280px;
