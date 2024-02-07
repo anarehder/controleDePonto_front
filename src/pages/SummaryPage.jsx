@@ -20,10 +20,7 @@ function SummaryPage(){
     const formattedDate = todayDate.toLocaleDateString('pt-BR', options);
     
     const navigate = useNavigate();
-    if (workedToday && workedTodayHours === "00:00") {
-        calculateTodayWorkedHours();
-    }
-
+    console.log(workedToday);
     useEffect(() => {
         (async () => {
             try {
@@ -37,16 +34,10 @@ function SummaryPage(){
                 const day = dateForApi();
                 const response = await apiService.getTodayHours(user.token, day);
                 if (response.status === 200) {
+                    console.log(response.data);
                     setData(response.data);
-                    if (response.data.hourControls){
-                        const formattedTime = {};
-                        Object.keys(response.data.hourControls).forEach(propriedade => {
-                            if (propriedade.slice(-4) === 'time' && response.data.hourControls[propriedade]) {
-                                formattedTime[propriedade] = response.data.hourControls[propriedade].slice(11, 16);
-                            }
-                        });
-                        setWorkedToday(formattedTime);
-                    }
+                    setWorkedToday(response.data.hourControls)
+                    calculateTodayWorkedHours(response.data.hourControls);
                 }
             } catch (error) {
                 const userLocal = localStorage.getItem("user");
@@ -58,40 +49,18 @@ function SummaryPage(){
         })()
     }, []);
     
-    function calculateTodayWorkedHours () {
-        let total1;
-        let total2;
-        if (workedToday.entry_time && workedToday.pause_time){
-            const [hoursEntry, minutesEntry] = workedToday?.entry_time.split(":").map(Number);
-            const [hoursPause, minutesPause] = workedToday?.pause_time.split(":").map(Number);
-            const totalMinutes = (hoursPause*60) + minutesPause - (hoursEntry*60) - minutesEntry;
-            const hours = (totalMinutes / 60).toFixed(2);
-            const minutes = totalMinutes % 60;
-            total1 =`${String(hours).slice(0,-3).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
-            if (!workedToday.return_time || !workedToday.exit_time) {
-                setWorkedTodayHours(total1);
-            }
-        }
-        if (workedToday.return_time && workedToday.exit_time){
-            const [hoursReturn, minutesReturn] = workedToday?.return_time.split(":").map(Number);
-            const [hoursExit, minutesExit] = workedToday?.exit_time.split(":").map(Number);
-            const totalMinutes = (hoursExit*60) + minutesExit - (hoursReturn*60) - minutesReturn;
-            const hours = (totalMinutes / 60).toFixed(2);
-            const minutes = totalMinutes % 60;
-            total2 =`${String(hours).slice(0,-3).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
-            if (!workedToday.entry_time || !workedToday.pause_time) {
-                setWorkedTodayHours(total2);
-            }
-        }
-        if (workedToday.entry_time && workedToday.pause_time && workedToday.return_time && workedToday.exit_time){
-            const [hours1, minutes1] = total1.split(":").map(Number);
-            const [hours2, minutes2] = total2.split(":").map(Number);
-            const totalMinutes = (hours1*60) + minutes1 + (hours2*60) + minutes2;
-            const hours = (totalMinutes / 60).toFixed(2);
-            const minutes = totalMinutes % 60;
-            const total =`${String(hours).slice(0,-3).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
-            setWorkedTodayHours(total);
-        }
+    function calculateTodayWorkedHours(hourControlsData) {
+        let totalMinutes = 0;
+        hourControlsData.forEach(item => {
+            const horaMinuto = item.totalWorkedByDay.slice(11, 16); // Extrai apenas a hora e o minuto
+            const [horas, minutos] = horaMinuto.split(":").map(Number); // Separa as horas e os minutos
+            totalMinutes += horas * 60 + minutos; // Converte as horas para minutos e soma os minuto
+        });
+        
+        const hours = Math.floor(totalMinutes / 60).toString().padStart(2, '0'); // Calcula as horas totais
+        const minutes = (totalMinutes % 60).toString().padStart(2, '0'); // Calcula os minutos restantes
+        console.log(hours, minutes);
+        setWorkedTodayHours(`${hours}:${minutes}`)
     }
 
     function dateForApi() {
