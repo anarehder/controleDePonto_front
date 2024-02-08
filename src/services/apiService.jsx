@@ -42,6 +42,10 @@ function changePassword(token, body) {
     return axios.post(`${BASE_URL}/users/changepassword`, body, { headers: { Authorization: token } });
 }
 
-const apiService = { signIn, getTodayHours, postHours, getMonthHours, signOut, getUsers, getUserReport, createUser, checkSession, changePassword };
+function getFullReport(token, body) {
+    return axios.post(`${BASE_URL}/bank/generalReport`, body, { headers: { Authorization: token } });
+}
+
+const apiService = { signIn, getTodayHours, postHours, getMonthHours, signOut, getUsers, getUserReport, createUser, checkSession, changePassword, getFullReport };
 
 export default apiService;

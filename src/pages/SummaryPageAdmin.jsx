@@ -26,7 +26,7 @@ function SummaryPageAdmin(){
         <PageContainer>
             <HeaderComponent />
             <MainContainer>
-                <Link to={'/excelList'} >
+                <Link to={'/fullreport'} >
                     <button>
                         <p>Relatório completo por mês</p>
                         <GoArrowRight size={24} />

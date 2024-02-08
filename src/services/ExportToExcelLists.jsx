@@ -2,29 +2,30 @@ import * as XLSX from 'xlsx';
 import styled from 'styled-components';
 import { GoArrowRight } from "react-icons/go";
 
-const ExportToExcelLists = ({ dataArray }) => {
-    const month = dataArray[0].month;
+const ExportToExcelLists = ({ data, month }) => {
+    console.log(data);
     const exportToExcel = () => {
-        dataArray.forEach(({ name, month, data }, index) => {
-            const title = [name, month];
+        const wb = XLSX.utils.book_new();
+        data.forEach(( d, index) => {
+            console.log(d);
+            const title = [d.name];
             const headers = ["Dia", "Entrada", "Saída", "Horas/Dia"];
 
             const footer = [
-                ["Total Horas no Mês", data.bankHours?.workedHoursByMonth ? data.bankHours?.workedHoursByMonth : "00:00"],
-                ["Saldo Mês Atual", data.bankHours?.totalHoursByMonth ? data.bankHours?.totalHoursByMonth : "00:00"],
-                ["Saldo Mês Anterior", data.bankBalanceLastMonth.hoursBankBalance],
-                ["Banco de Horas", data.bankHours?.hoursBankBalance ? data.bankHours?.hoursBankBalance : "00:00"]
+                ["Total Horas no Mês", d.report?.bankHours?.workedHoursByMonth ? d.report?.bankHours?.workedHoursByMonth : "00:00"],
+                ["Saldo Mês Atual", d.report?.bankHours?.totalHoursByMonth ? d.report?.bankHours?.totalHoursByMonth : "00:00"],
+                ["Saldo Mês Anterior", d.report?.bankBalanceLastMonth.hoursBankBalance],
+                ["Banco de Horas", d.report?.bankHours?.hoursBankBalance ? d.report?.bankHours?.hoursBankBalance : "00:00"]
             ];
 
-            const dataRows = data.hourControls.map(item => [item.day.slice(0,10), 
+            const dataRows = d.report?.hourControls.map(item => [item.day.slice(0,10), 
                                             item.entry_time ? item.entry_time.slice(11,16) : "-",
                                             item.exit_time ? item.exit_time.slice(11,16) : "-", 
                                             item.totalWorkedByDay.slice(11,16)]);
             
             const wsData = [title, headers, ...dataRows, ...footer];
-            
             const ws = XLSX.utils.aoa_to_sheet(wsData);
-            XLSX.utils.book_append_sheet(wb, ws, name);
+            XLSX.utils.book_append_sheet(wb, ws, d.name);
         });
         XLSX.writeFile(wb, `${month}_horas.xlsx`);
     }

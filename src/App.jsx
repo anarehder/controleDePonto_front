@@ -10,6 +10,7 @@ import UserProvider from "./contexts/UserContext";
 import SummaryPageAdmin from "./pages/SummaryPageAdmin";
 import CreateUserPage from "./pages/CreateUserPage";
 import ChangePassword from "./pages/ChangePasswordPage";
+import FullReportPage from "./pages/FullReportPage";
 
 function App() {
 
@@ -24,6 +25,7 @@ function App() {
             <Route path="/adminsummary" element={<SummaryPageAdmin />} />
             <Route path="/password" element={<ChangePassword />} />
             <Route path="/createuser" element={<CreateUserPage />} />
+            <Route path="/fullreport" element={<FullReportPage />} />
             <Route path="/summary" element={<SummaryPage />} />
             <Route path="/registry" element={<RegistryPage />} />
             <Route path="/report" element={<ReportPage />} />
