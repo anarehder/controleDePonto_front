@@ -102,8 +102,6 @@ function AdminPage(){
                     <TableHeader>
                         <h1>Data</h1>
                         <h1>Entrada</h1>
-                        <h1>Pausa</h1>
-                        <h1>Retorno</h1>
                         <h1>Saída</h1>
                         <h1>Horas/Dia</h1>
                     </TableHeader>
@@ -115,12 +113,6 @@ function AdminPage(){
                                 </h2>
                                 <h2>
                                     {d.entry_time ? d.entry_time.slice(11, 16) : "-"}
-                                </h2>
-                                <h2>
-                                    {d.pause_time ? d.pause_time.slice(11, 16) : "-"}
-                                </h2>
-                                <h2>
-                                    {d.return_time ? d.return_time.slice(11, 16) : "-"}
                                 </h2>
                                 <h2>
                                     {d.exit_time ? d.exit_time.slice(11, 16) : "-"}
@@ -180,8 +172,8 @@ function AdminPage(){
                 <AlertView> Selecione os dados para visualizar </AlertView>
             }
             {(data !== 0 && employeeInfo.name !="" )&& <ExportToExcel name={employeeInfo.name} month={employeeInfo.month} data={data} />}
-            <Logout />
             <ReturnComponent name={user.name} />
+            <Logout />
         </PageContainer>
     )
 }
@@ -232,6 +224,7 @@ const AlertView = styled.h1`
 
 
 const DataArea = styled.div`
+    width: 60%;
     flex-direction: column;
     justify-content: center;
     border-radius: 24px;
