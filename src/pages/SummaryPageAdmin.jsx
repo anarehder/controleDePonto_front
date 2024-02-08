@@ -26,9 +26,15 @@ function SummaryPageAdmin(){
         <PageContainer>
             <HeaderComponent />
             <MainContainer>
+                <Link to={'/excelList'} >
+                    <button>
+                        <p>Relatório completo por mês</p>
+                        <GoArrowRight size={24} />
+                    </button>
+                </Link>
                 <Link to={'/admin'} >
                     <button>
-                        <p>Relatórios funcionários</p>
+                        <p>Relatório funcionário/mês</p>
                         <GoArrowRight size={24} />
                     </button>
                 </Link>
@@ -56,7 +62,6 @@ const PageContainer = styled.div`
     }
     a {
         height: 65px;
-        margin-top: 40px;
     }
 `
 
@@ -65,4 +70,9 @@ const MainContainer = styled.div`
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+    gap: 40px;
+    margin-top: 40px;
+    button {
+        margin: 0;
+    }
 `
