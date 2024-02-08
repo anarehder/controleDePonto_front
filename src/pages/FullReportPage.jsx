@@ -12,9 +12,8 @@ function FullReportPage(){
     const [user] = useContext(UserContext);
     const [form, setForm] = useState({ month: ""});
     const [data, setData] = useState([]);
-    const [carregando, setCarregando] = useState(false);
     const navigate = useNavigate();
-    
+
     useEffect(() => {
         const userLocal = localStorage.getItem("user");
         if (!userLocal) {
@@ -31,11 +30,17 @@ function FullReportPage(){
         e.preventDefault();
         if (form.month === "") {
             alert ("Selecione o mês desejado.");
+            setData([]);
             return;
         } else if (new Date(form.month) > new Date()) {
             alert ("Selecione um mês válido.");
+            setData([]);
             return;
-        } else {
+        } else if(new Date(form.month) < new Date("2024-01-31")) {
+            alert ("Selecione um mês a partir de fev/2024.");
+            setData([]);
+            return;
+        }else {
             getMonthData();
         }              
     };
@@ -43,16 +48,12 @@ function FullReportPage(){
     async function getMonthData(){
         try {
             const body = { month: form.month, employeeId: user.id}
-            setCarregando(true);
             const response = await apiService.getFullReport(user.token, body);
             if (response.status === 200) {
-                console.log(data);
                 setData(response.data);
-                setCarregando(false);
             }
         } catch (error) {
             alert("Ocorreu um erro, tente novamente");
-            setCarregando(false);
         }
     }
 

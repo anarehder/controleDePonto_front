@@ -9,7 +9,7 @@ import ExportToExcel from '../services/ExportToExcel';
 import ReturnComponent from '../components/ReturnSummaryComponent';
 import { useNavigate } from "react-router-dom";
 
-function AdminPage(){
+function AdminUserReportPage(){
     const navigate = useNavigate();
     const [user, setUser] = useContext(UserContext);
     const [form, setForm] = useState({ month: "", employeeId: 0});
@@ -50,6 +50,10 @@ function AdminPage(){
             return;
         } else if (new Date(form.month) > new Date()) {
             alert ("Selecione um mês válido.");
+            return;
+        }  else if(new Date(form.month) < new Date("2024-01-31")) {
+            alert ("Selecione um mês a partir de fev/2024.");
+            setData([]);
             return;
         } else {
             try {
@@ -171,14 +175,14 @@ function AdminPage(){
                 :
                 <AlertView> Selecione os dados para visualizar </AlertView>
             }
-            {(data !== 0 && employeeInfo.name !="" )&& <ExportToExcel name={employeeInfo.name} month={employeeInfo.month} data={data} />}
+            {(data.length !== 0 && employeeInfo.name !="" )&& <ExportToExcel name={employeeInfo.name} month={employeeInfo.month} data={data} />}
             <ReturnComponent name={user.name} />
             <Logout />
         </PageContainer>
     )
 }
 
-export default AdminPage;
+export default AdminUserReportPage;
 
 const PageContainer = styled.div`
 width: 100%;

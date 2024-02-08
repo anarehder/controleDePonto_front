@@ -32,7 +32,7 @@ function SummaryPageAdmin(){
                         <GoArrowRight size={24} />
                     </button>
                 </Link>
-                <Link to={'/admin'} >
+                <Link to={'/userreport'} >
                     <button>
                         <p>Relatório funcionário/mês</p>
                         <GoArrowRight size={24} />

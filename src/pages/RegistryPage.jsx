@@ -39,9 +39,13 @@ function RegistryPage() {
         try {
             const fullDate = new Date(`${form.date}T${form.time}:00`);
             const todayDate = new Date();
-
+            const firstDate = new Date("2024-01-31T23:59:59");
             if (fullDate > todayDate) {
                 alert("Data inválida!");
+                return;
+            }
+            else if(fullDate < firstDate) {
+                alert ("Selecione uma data a partir de fev/2024.");
                 return;
             }
             const formattedType = selectedType === "entry_time" || selectedType === "return_time" ? "entry_time" : "exit_time";

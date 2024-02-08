@@ -23,7 +23,6 @@ function LoginPage(){
         try {
             const response = await apiService.signIn(form)
             if (response.status === 200) {
-                console.log(response.data);
                 const { id, name, token, username } = response.data;
                 const userData = {
                     id,
@@ -39,7 +38,6 @@ function LoginPage(){
                     navigate('/summary');
                 }
             }
-            console.log(response);
         } catch (error) {
             if (error.response.status === 401 || error.response.status === 400 ) alert("Dados incorretos, tente novamente");
         } finally {

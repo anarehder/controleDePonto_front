@@ -3,11 +3,9 @@ import styled from 'styled-components';
 import { GoArrowRight } from "react-icons/go";
 
 const ExportToExcelLists = ({ data, month }) => {
-    console.log(data);
     const exportToExcel = () => {
         const wb = XLSX.utils.book_new();
-        data.forEach(( d, index) => {
-            console.log(d);
+        data.forEach(( d ) => {
             const title = [d.name];
             const headers = ["Dia", "Entrada", "Saída", "Horas/Dia"];
 
