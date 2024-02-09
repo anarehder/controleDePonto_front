@@ -17,6 +17,7 @@ function AdminUserReportPage(){
     const [hours, setHours] = useState([]);
     const [employees, setEmployees] = useState([]);
     const [employeeInfo, setEmployeeInfo] = useState({ month: "", name: ""});
+    const [item, setItem] = useState(null);
 
     useEffect(() => {
         if (user.name !== "admin"){
@@ -71,6 +72,28 @@ function AdminUserReportPage(){
         }
     };
 
+    const handleCheckboxChange = (index) => {
+        index === item ? setItem(null) : setItem(index);
+    }
+
+    const handleDelete = async (index) => {
+        try {
+            const confirm = window.confirm(`Você tem certeza que quer deletar o item selecionado?`);
+            if (confirm) {
+                const response = await apiService.deleteHours(user.token, index);
+                if (response.status === 200) {
+                    alert("Registro deletado com sucesso!");
+                    const updatedHours = hours.filter(item => item.id !== index);
+                    setHours(updatedHours);
+                }
+            } else {
+                alert('Ação cancelada.');
+            }
+        } catch (error) {
+            alert("Ocorreu um erro");
+        }
+    }
+
     return(
         <PageContainer onSubmit={handleSubmit}>
             <HeaderComponent text={"Olá, João"} />
@@ -107,13 +130,15 @@ function AdminUserReportPage(){
                         <h1>Data</h1>
                         <h1>Entrada</h1>
                         <h1>Saída</h1>
-                        <h1>Horas/Dia</h1>
+                        <h1>Horas/Turno</h1>
+                        <h1>Ação</h1>
                     </TableHeader>
                     <Daily>
                         {hours.map((d, i) => (
                             <div key={i}>
+                                <input type="checkbox" checked={d.id === item}  onChange={() => handleCheckboxChange(d.id)} />
                                 <h2>
-                                    {d.day && `${d.day.slice(8,10)}-${d.day.slice(5,7)}-${d.day.slice(0,4)}`}
+                                    {d.day && `${d.day.slice(8, 10)}-${d.day.slice(5, 7)}-${d.day.slice(0, 4)}`}
                                 </h2>
                                 <h2>
                                     {d.entry_time ? d.entry_time.slice(11, 16) : "-"}
@@ -124,6 +149,7 @@ function AdminUserReportPage(){
                                 <h2>
                                     {d?.totalWorkedByDay.slice(11, 16)}
                                 </h2>
+                                <button onClick={() => handleDelete(d.id)}>Deletar</button>
                             </div>
                         ))}
                     </Daily>
@@ -239,10 +265,6 @@ const DataArea = styled.div`
     h2 {
         font-weight: 400;
         font-size: 25px;
-        width: 125px;
-    }
-    h1 {
-        width: 125px;
     }
     h3 {
         text-align: center;
@@ -256,6 +278,15 @@ const TableHeader = styled.div`
     border-bottom: 2px solid #E6E6E6;
     gap: 25px;
     text-align: center;
+    :first-child {
+        width: 200px;
+    }
+    h1{
+        width: 130px;
+    }
+    :nth-last-child(-n+1){
+        width: 100px;
+    }
 `
 
 const Daily = styled.div`
@@ -265,6 +296,15 @@ const Daily = styled.div`
     padding: 10px;
     gap: 25px;
     text-align: center;
+    h2{
+        width: 130px;
+        heigth: 40px;
+        line-height: 40px;
+    }
+    button {
+        width: 100px;
+        justify-content: center;
+    }
 `
 
 const TableFooter = styled.div`

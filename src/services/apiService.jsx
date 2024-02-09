@@ -46,6 +46,10 @@ function getFullReport(token, body) {
     return axios.post(`${BASE_URL}/bank/generalReport`, body, { headers: { Authorization: token } });
 }
 
-const apiService = { signIn, getTodayHours, postHours, getMonthHours, signOut, getUsers, getUserReport, createUser, checkSession, changePassword, getFullReport };
+function deleteHours(token, hourControlId) {
+    return axios.delete(`${BASE_URL}/bank/delete/${hourControlId}`, { headers: { Authorization: token } });
+}
+
+const apiService = { signIn, getTodayHours, postHours, getMonthHours, signOut, getUsers, getUserReport, createUser, checkSession, changePassword, getFullReport, deleteHours };
 
 export default apiService;
