@@ -63,7 +63,7 @@ function RegistryPage() {
             setForm({ date: '', time: '' });
             setSelectedType("");
         } catch (error) {
-            const erroDataLimite = "Não é possível alterar/adicionar datas anteriores a 40 dias atrás";
+            const erroDataLimite = "Não é possível alterar/adicionar datas anteriores a 10 dias atrás";
             if(error.response.data === erroDataLimite){
                 alert(erroDataLimite)
             } 
