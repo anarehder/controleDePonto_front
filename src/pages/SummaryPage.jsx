@@ -173,11 +173,16 @@ const MainInfo = styled.div`
         align-items: center;
         gap: 15px;
         font-size: 20px;
+
     }
     ul {
+        border: 2px solid rgba(2, 17, 33, 0.25);
+        border-radius: 20px;
+        width: 230px;
         display: flex;
         flex-direction: row;
-        gap: 10px;
+        flex-wrap: wrap;
+        justify-content: space-between;
     }
     button {
         max-width: 280px;
